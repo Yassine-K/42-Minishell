@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/06/01 22:39:50 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,31 +88,37 @@ void	remove_spaces_in_between()
 	int	i;
 
 	i = -1;
-	while (vars->initial_commands[++i])
-		vars->initial_commands[i] = ft_strtrim(vars->initial_commands[i], " ");
+	while (g_vars->initial_commands[++i])
+		g_vars->initial_commands[i] = ft_strtrim(g_vars->initial_commands[i], " ");
 }
 
 int	has_char(char *s, char c)
 {
 	int	i;
+	int quote[2];
 
+	quote[sin] = 0;
+	quote[doub] = 0;
 	i = -1;
 	while (s[++i])
-		if (s[i] == c)
+	{
+		if (s[i] == '\'' && !quote[doub])
+			quote[sin] = !quote[sin];
+		if (s[i] == '\"' && !quote[sin])
+			quote[doub] = !quote[doub];
+		if (s[i] == c && !quote[doub] && !quote[sin])
 			return (1);
+	}
 	return (0);
 }
 
 void	parse_commands(char *line)
 {
-	vars->initial_commands = initial_split( line, 0);
-	if (!vars->initial_commands)
-	{
+	g_vars->initial_commands = initial_split( line, 0);
+	if (!g_vars->initial_commands)
 		return ;
-	}
 	remove_spaces_in_between();
-	if(!parsing_commands( vars->initial_commands))
+	if(!parsing_commands( g_vars->initial_commands))
 		return;
-	
 	execution_phase();
 }

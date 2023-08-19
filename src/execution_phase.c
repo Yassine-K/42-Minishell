@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execution_phase.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/02 23:08:55 by ayman            ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 void	execute_built_in(t_command *command)
@@ -60,7 +61,7 @@ static void	handle_child3(t_command *tmp)
 	if(!builtin_should_execute_in_child(tmp))
 	{
 		execve(tmp->command_path, tmp->command_args,
-			convert_env_to_arr(vars->env_head));
+			convert_env_to_arr(g_vars->env_head));
 		custom_exit(1);
 	}
 }
@@ -68,7 +69,7 @@ static void	handle_child3(t_command *tmp)
 void do_redirections(t_cmd_redir *head)
 {
 
-	// t_cmd_redir * tmp = vars->command_head->redir;
+	// t_cmd_redir * tmp = g_vars->command_head->redir;
 	// while(tmp)
 	// {
 	// 	printf("type: %d   file name: %s\n", tmp->type, tmp->file);
@@ -117,17 +118,33 @@ void do_redirections(t_cmd_redir *head)
 
 void	handle_child(t_command *tmp, int i)
 {
-	if (i > 0)
+	if ((g_vars->pipe == 2 || g_vars->pipe == 3)||  (i > 0 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[(i - 1) * 2] == '1'))))
 	{
-		dup2(vars->prev_pipefd[0], 0);
-		close(vars->prev_pipefd[0]);
-		close(vars->prev_pipefd[1]);
+		// printf("handle child pipe: 2 cmd: %s\n",tmp->command_args[0]);
+
+		// if(g_vars->pipe == 2)
+		// {
+
+		// char line[101];
+		// int r =read(g_vars->prev_pipefd[0], line, 100);
+		// line[r] = 0;
+		// write(2,line,ft_strlen(line));
+
+		// }
+
+		dup2(g_vars->prev_pipefd[0], 0);
+
+
+
+		close(g_vars->prev_pipefd[0]);
+		close(g_vars->prev_pipefd[1]);
 	}
-	if (i < vars->command_count - 1)
+	if ((g_vars->pipe == 1  || g_vars->pipe == 3)|| (i < g_vars->command_count - 1 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[i * 2] == '1'))))
 	{
-		dup2(vars->next_pipefd[1], 1);
-		close(vars->next_pipefd[0]);
-		close(vars->next_pipefd[1]);
+		// printf("handle child pipe: 1 cmd: %s\n",tmp->command_args[0]);
+		dup2(g_vars->next_pipefd[1], 1);
+		close(g_vars->next_pipefd[0]);
+		close(g_vars->next_pipefd[1]);
 	}
 	do_redirections(tmp->redir);
 	if (tmp->is_valid_command == 0)

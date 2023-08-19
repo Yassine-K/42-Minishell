@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/27 23:55:36 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ char **split_arg(char *arg)
 
 int analyze_args(char **arg)
 {
-	int i = -1;
-
-	while(arg[++i])
+	// int i = -1;
+	// while(arg[++i])
+	if(arg[0])
 	{
 		int j = -1;
-		while(arg[i][++j])
+		while(arg[0][++j])
 		{
-			if(arg[i][j] == '_')
+			if(arg[0][j] == '_')
 				j++;
-			if(arg[i][j] && ft_isdigit(arg[i][j]) && j==0)
+			if(arg[0][j] && ft_isdigit(arg[0][j]) && j==0)
 				return 0;
-			if(arg[i][j] && arg[i][j] == '@')
+			if(arg[0][j] &&( arg[0][j] == '@' ||  arg[0][j] == '.'))
 				return 0;
 		}
 	}
@@ -65,7 +65,7 @@ void	env_export(t_command *command)
 
 	if (!command->command_args[1])
 	{
-		env = vars->env_head;
+		env = g_vars->env_head;
 		while (env)
 		{
 			char *tmp = env->env_data;
@@ -94,7 +94,7 @@ void	env_export(t_command *command)
 		if(!analyze_args(args))
 		{
 			ft_dprintf(2,"minishell: not a valid identifier\n");
-			*vars->ex_status = 1;
+			g_vars->ex_status = 1;
 		}
 		else
 		{	
@@ -102,11 +102,11 @@ void	env_export(t_command *command)
 			{
 				new_env = ft_new_env_node(command->command_args[i], "");
 				new_env->not_declared = no_value;
-				add_env_in_back(&vars->env_head, new_env);
+				add_env_in_back(&g_vars->env_head, new_env);
 				return;
 			}
 			
-			search = vars->env_head;
+			search = g_vars->env_head;
 			the_search_env(&search, args);
 			if (!search)
 			{
@@ -115,7 +115,7 @@ void	env_export(t_command *command)
 				else
 					new_env = ft_new_env_node(args[0], ft_strtrim(args[1], "\'\""));
 				new_env->not_declared = user_defined;
-				add_env_in_back(&vars->env_head, new_env);
+				add_env_in_back(&g_vars->env_head, new_env);
 			}
 		}
 	}
@@ -125,16 +125,16 @@ void	env()
 {
 	t_env	*env;
 
-	env = vars->env_head;
+	env = g_vars->env_head;
 	while (env)
 	{
 		if(env->not_declared != no_value)
 		{
 			char *tmp = env->env_data;
 			if(!tmp)
-				printf("%s=\n", env->env_id);
+				ft_dprintf(1,"%s=\n", env->env_id);
 			else
-				printf("%s=%s\n", env->env_id, env->env_data);
+				ft_dprintf(1,"%s=%s\n", env->env_id, env->env_data);
 		}
 		env = env->next;
 	}	
@@ -147,14 +147,14 @@ void	unset(t_command *cmd)
 	int i = 0;
 	while(cmd->command_args[++i])
 	{
-		env = vars->env_head;
+		env = g_vars->env_head;
 		while (env)
 		{
 			if (!ft_strncmp(cmd->command_args[i], env->env_id, -1))
 				break ;
 			env = env->next;
 		}
-		ft_node_remove_if(&vars->env_head, cmd->command_args[i]);
+		ft_node_remove_if(&g_vars->env_head, cmd->command_args[i]);
 	}
 }
 

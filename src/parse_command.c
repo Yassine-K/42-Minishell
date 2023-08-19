@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 22:39:04 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	check_permision_help(char *command_path, char *name, int a)
 		if (access(name, F_OK) == -1)
 		{
 			ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
-			*vars->ex_status = 1;
+			g_vars->ex_status = 1;
 		}
 		else if (access(name, R_OK) == -1)
 			ft_dprintf(2, "minishell: %s: Permission denied\n", name);
@@ -126,7 +126,7 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 			if(k != 1)
 			{
 				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", name);
-				*vars->ex_status = 1;
+				g_vars->ex_status = 1;
 				return 0;
 			}
 			if(!rederiction_error(arg, i))
@@ -157,25 +157,26 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 		red_help(in, a[arr], &i);
 	
 	a[args] = make_new_args(a[arr]);
-	a[args] = expand_variables(in, a[args]);
+	// a[args] = expand_variables(in, a[args]);
 	// int i = -1;
 	// while (a[args][++i])
 	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
-	a[args] = remove_empty_args(a[args]);
+	// if(a[args][1])
+	// 	printf("command: |%s|\n", a[args][1]);
+	// a[args] = remove_empty_args(a[args]);
 	i = -1;
 	while (a[args][++i])
 		fix_string(in, a[args][i]);
-	
 	char *command_path = get_command_path(a[path], a[args][0]);
 
 	// printf("command: |%s|\n", a[args][0]);
-	if (a[args] && a[args][0])
-	{
-		if (check_permision(command_path, a[args][0], 1))
-			in->is_valid_command = 0;
-		else
-			in->is_valid_command = 1;
-	}
+	// if (a[args] && a[args][0])
+	// {
+	// 	if (check_permision(command_path, a[args][0], 1))
+	// 		in->is_valid_command = 0;
+	// 	else
+	// 		in->is_valid_command = 1;
+	// }
 	in->command_path = command_path;
 	in->command_args = a[args];
 	return 1;
@@ -197,7 +198,7 @@ int	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		if(!remove_quotes( info, a[arr]))
+		if(!remove_quotes(info, a[arr]))
 			return 0;
  
 		// int i = -1;
@@ -209,7 +210,7 @@ int	parsing_commands(char **commands)
 			
 
 		node = ft_new_command(info);
-		add_command_in_back(&vars->command_head, node);
+		add_command_in_back(&g_vars->command_head, node);
 	}
 	return 1;
 }

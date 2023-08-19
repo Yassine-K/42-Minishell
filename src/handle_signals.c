@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signals.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 18:30:46 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/26 22:45:11 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_termio()
 {
-	tcgetattr(STDIN_FILENO, &vars->old_term);
-	vars->new_term = vars->old_term;
-	vars->new_term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &vars->new_term);
+	tcgetattr(STDIN_FILENO, &g_vars->old_term);
+	g_vars->new_term = g_vars->old_term;
+	g_vars->new_term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->new_term);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_command_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/06/01 22:10:34 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	int		sin = 0;
 	int		dubl = 0;
 	
-	(void) vars;
+	(void) g_vars;
 	i = -1;
 	while (arr[++i])
 	{
@@ -128,7 +128,7 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	if(sin % 2 != 0 || dubl % 2 != 0)
 	{
 		ft_dprintf(2, "minishell: unexpected EOF while looking for matching\n");
-		*vars->ex_status = 2;
+		g_vars->ex_status = 2;
 		return 0;
 	}
 	i = -1;
@@ -166,7 +166,7 @@ char *gg(char *original_string,int should_expand)
 			i++;
 			if(original_string[i] == '?')
 			{
-				char *data = ft_itoa(*vars->ex_status);
+				char *data = ft_itoa(g_vars->ex_status);
 				final = ft_strjoin(final, data);
 			}
 			else
@@ -228,17 +228,34 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	limiter = expand_env(info,ft_strtrim(limiter,"\"\'"));
 	limiter = ft_strjoin(limiter, "\n");
 	total = "";
+	g_vars->is_running = 3;
+	if(!isatty(0))
+		g_vars->heredocs_fd = 0;
+	else
+		g_vars->heredocs_fd = dup(0);
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->new_term);
 	while (1)
 	{
-		if(isatty(STDIN_FILENO))
+		if(!g_vars->interrupted_mode && isatty(STDIN_FILENO))
 			ft_dprintf(1, "> ");
-		str = get_next_line(0);
+		str = get_next_line(g_vars->heredocs_fd);
+		// str = get_next_line(0);
+		if(g_vars->interrupted_mode == 3)
+		{
+			g_vars->ex_status = 1;
+			total = "";
+			break;
+		}
 		char *ww = expand_env(info,str);
 		if (!ww || (ww && !ft_strncmp(ww, limiter, -1)))
 			break ;
 		// printf("str : |%s| limiter:  |%s|\n", ww,limiter);
 		total = ft_strjoin(total, ww);
 	}
+	g_vars->is_running = 0;
+	if(isatty(0))
+		close(g_vars->heredocs_fd);
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->old_term);
 	char *name = "/tmp/herdoc_data";
 	unlink(name);
 	int fd = open(name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -246,12 +263,20 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	close(fd);
 	return (name);
 }
+static int is_a_redirection(char *str)
+{
+	if(!str)
+		return 0;
+	if(!ft_strncmp(str, ">", -1) || !ft_strncmp(str, "<", -1) || !ft_strncmp(str, ">>", -1) || !ft_strncmp(str, "<<", -1))
+		return 1;
+	return 0;
+}
 
 void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	char **arr;
 	char *file_name;
-	if(ft_strchr(commands[*i + 1], '$'))
+	if(is_a_redirection(commands[*i]) && ft_strchr(commands[*i + 1], '$'))
 	{
 		arr = my_alloc(sizeof(char *) * 2);
 		arr[0] = ft_strdup(commands[*i + 1]);;
@@ -264,23 +289,23 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 	}
 	else
 		file_name = commands[*i + 1];
-	if (!ft_strncmp(commands[*i], ">", -1) )
+	if (!ft_strncmp(commands[*i], ">", -1))
 	{
-		check_permision(NULL, file_name, 3);
+		// check_permision(NULL, file_name, 3);
 		t_cmd_redir *redir =ft_new_redir(OUTPUT, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], "<", -1) )
 	{
-		check_permision(NULL, file_name, 2);
+		// check_permision(NULL, file_name, 2);
 		t_cmd_redir *redir =ft_new_redir(INPUT, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
 	if (!ft_strncmp(commands[*i], ">>", -1))
 	{
-		check_permision(NULL, file_name, 3);
+		// check_permision(NULL, file_name, 3);
 		t_cmd_redir *redir =ft_new_redir(APPEND, file_name);
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
