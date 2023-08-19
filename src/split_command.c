@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:17 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 16:15:43 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:22:53 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,112 +80,6 @@ static void	handle_cases(char *s, int n[3], int in_quotes[3], char **phrases)
 		quotes_in(in_quotes, n, s);
 	n[i]++;
 }
-
-int does_redirection_exist(char *str)
-{
-	int i = -1;
-	int count = 0;
-	while (str[++i])
-	{
-		if (str[i] == '<' && str[i + 1] && str[i + 1] == '<')
-		{
-			count++;
-			i++;
-		}
-		else if (str[i] == '>' && str[i + 1] && str[i + 1] == '>')
-		{
-			count++;
-			i++;
-		}
-		else if ((str[i] == '<' && !str[i + 1]) || (str[i] == '<'  && str[i + 1] && str[i + 1] != '<'))
-			count++;
-		else if ((str[i] == '>' && !str[i + 1]) || (str[i] == '>'  && str[i + 1] && str[i + 1] != '>'))
-			count++;
-	}
-	return count;
-}
-
-char **extended_splitting(char **phrases)
-{
-    int i = -1;
-    int count = 0;
-    while (phrases[++i])
-    {
-		if (phrases[i][0] != '"' && phrases[i][0] != '\'' && !ft_strchr(phrases[i], '='))
-		{
-        	count += split_charset_word_count(phrases[i], "><");
-        	count += does_redirection_exist(phrases[i]);
-		}
-		if (ft_strchr(phrases[i], '=') || phrases[i][0] == '"' || phrases[i][0] == '\'')
-			count++;
-    }
-    char **arr = my_alloc(sizeof(char *) * (count + 1));
-    i = 0;
-    int j = 0;
-	int k = 0;
-    while (phrases[i])
-    {
-		if (phrases[i][0] == '"' || phrases[i][0] == '\'' || ft_strchr(phrases[i], '='))
-		{
-			arr[j++] = phrases[i];
-			i++;
-		}
-		if (!phrases[i])
-			break ;
-        if (!does_redirection_exist(phrases[i]))
-        {
-            arr[j] = phrases[i];
-            j++;
-        }
-        else
-        {
-            k = 0;
-            while (phrases[i][k])
-            {
-				if (does_redirection_exist(&phrases[i][k]))
-                {
-					int x = k;
-					while (phrases[i][x] && phrases[i][x] != '<' && phrases[i][x] != '>')
-						x++;
-					if (phrases[i][x] && x-k > 0)
-					{
-						arr[j++] = ft_substr(phrases[i], k, x-k);
-						k += x-k;
-					}
-                    if ((phrases[i][k] == '<' && phrases[i][k + 1] && phrases[i][k + 1] == '<') ||
-                        (phrases[i][k] == '>' && phrases[i][k + 1] && phrases[i][k + 1] == '>'))
-                    {
-                        arr[j] = ft_substr(phrases[i], k, 2);
-                        k++;
-                        j++;
-                    }
-                    else if ((phrases[i][k] == '<' && !phrases[i][k + 1]) ||
-                             (phrases[i][k] == '<' && phrases[i][k + 1] && phrases[i][k + 1] != '<'))
-                    {
-                        arr[j] = ft_substr(phrases[i], k, 1);
-                        j++;
-                    }
-                    else if ((phrases[i][k] == '>' && !phrases[i][k + 1]) ||
-                             (phrases[i][k] == '>' && phrases[i][k + 1] && phrases[i][k + 1] != '>'))
-                    {
-                        arr[j] = ft_substr(phrases[i], k, 1);
-                        j++;
-                    }
-                }
-				else
-				{
-					arr[j++] = ft_substr(phrases[i], k, ft_strlen(phrases[i]) - k);
-					k += ft_strlen(phrases[i]) - k;
-				}
-                k++;
-            }
-        }
-        i++;
-    }
-    arr[j] = NULL;
-    return arr;
-}
-
 
 char	**split_command(char *s)
 {

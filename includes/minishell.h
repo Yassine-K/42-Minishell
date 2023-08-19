@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 16:14:25 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:23:32 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void					the_search_env(t_env **search, char **args);
 void					parse_commands(char *line);
 char					**initial_split(char *s, int sw);
 char					**split_command(char *s);
-
+char					**extended_splitting(char **phrases);
 void					set_env(void);
 char					*get_env_data(char *id);
 int						remove_quotes(t_fill_info *info, char **arr);
