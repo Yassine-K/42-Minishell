@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 20:45:45 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:52:42 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ void	red_help2(t_fill_info *info, char **commands, int *i, char *file_name)
 {
 	char		*heredoc_file;
 	t_cmd_redir	*redir;
-	
+
 	if (!ft_strncmp(commands[*i], "<", -1))
 	{
 		redir = ft_new_redir(INPUT, file_name);
@@ -287,7 +287,6 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 	{
 		arr = my_alloc(sizeof(char *) * 2);
 		arr[0] = ft_strdup(commands[*i + 1]);
-		;
 		arr[1] = NULL;
 		arr = expand_variables(info, arr);
 		k = -1;
@@ -306,6 +305,33 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 	red_help2(info, commands, i, file_name);
 }
 
+void	count_redirections_help(char *command, int *i, int *count)
+{
+	if (command[(*i)] == '<')
+	{
+		if ((*i) + 1 < len && command[(*i) + 1] != ' ' && command[(*i)
+				+ 1] == '<')
+		{
+			(*i)++;
+			(*count)++;
+		}
+		else if ((*i) + 1 < len && command[(*i) + 1] != ' ' && command[(*i)
+				+ 1] != '<')
+			(*count)++;
+	}
+	else if (command[(*i)] == '>')
+	{
+		if (((*i) + 1 < len) && command[(*i) + 1] != ' ' && command[(*i)
+				+ 1] != '>')
+		{
+			(*i)++;
+			(*count)++;
+		}
+		else if (command[(*i) + 1] != ' ' && command[(*i) + 1] == '>')
+			(*count)++;
+	}
+}
+
 int	count_redirections(char *command)
 {
 	int	count;
@@ -321,30 +347,8 @@ int	count_redirections(char *command)
 	{
 		if (command[i] == '<' || command[i] == '>')
 		{
-			if (command[i] == '<')
-			{
-				if (i + 1 < len && command[i + 1] != ' ' && command[i
-					+ 1] == '<')
-				{
-					i++;
-					count++;
-				}
-				else if (i + 1 < len && command[i + 1] != ' ' && command[i
-					+ 1] != '<')
-					count++;
-			}
-			else if (command[i] == '>')
-			{
-				if ((i + 1 < len) && command[i + 1] != ' ' && command[i
-					+ 1] != '>')
-				{
-					i++;
-					count++;
-				}
-				else if (command[i + 1] != ' ' && command[i + 1] == '>')
-					count++;
-			}
-			is_parsing_command = 0; 
+			count_redirections_help(command, &i, &count);
+			is_parsing_command = 0;
 		}
 		else if (command[i] == ' ' && !is_parsing_command)
 		{
@@ -353,6 +357,6 @@ int	count_redirections(char *command)
 		i++;
 	}
 	if (is_parsing_command && (len > 0 && command[len - 1] != ' '))
-		count++; 
+		count++;
 	return (count);
 }
