@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 10:32:57 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:02:52 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	execution_phase()
 		tmp->command_args = expand_variables(tmp->info, tmp->command_args);
 		j = -1;
 		while (tmp->command_args[++j])
-			fix_string(tmp->info, tmp->command_args[j]);
+			fix_string(tmp->info, tmp->command_args[j], tmp->command_args[j]);
 		// printf("0: %s || 1: %s || is: %d\n", tmp->command_args[0], tmp->command_args[1],built_in_should_execute_in_main(tmp));
 		if (tmp->command_args[0] && built_in_should_execute_in_main(tmp) && (!g_vars->op[0] || (g_vars->op[0] && (i - 1 >= 0 && g_vars->op[(i - 1) * 2] != '1') && (g_vars->op[i * 2] && g_vars->op[i * 2] != '1')) || (g_vars->op[0] && (i == 0 && (g_vars->op[i * 2] && g_vars->op[i * 2] != '1')))))
 		{

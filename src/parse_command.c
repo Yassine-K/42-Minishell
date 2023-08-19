@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 16:05:44 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:03:00 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 	a[args] = make_new_args(a[arr]);
 	i = -1;
 	while (a[args][++i])
-		fix_string(in, a[args][i]);
+		fix_string(in, a[args][i], a[args][i]);
 	command_path = get_command_path(a[path], a[args][0]);
 	in->command_path = command_path;
 	in->command_args = a[args];

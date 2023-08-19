@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 16:05:53 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 16:14:45 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:02:44 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	test_ambiguous_help(t_fill_info *in, char **arg, int i)
 	arr = expand_variables(in, arr);
 	k = -1;
 	while (arr[++k])
-		fix_string(in, arr[k]);
+		fix_string(in, arr[k], arr[k]);
 	arr = split_command(*arr);
 	k = -1;
 	while (arr[++k])

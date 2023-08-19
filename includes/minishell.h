@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:55:23 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:02:33 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ t_cmd_redir				*ft_new_redir(int type, char *file);
 char					**remove_empty_args(char **commands);
 int						does_redirection_exist(char *str);
 void					red_help(t_fill_info *info, char **commands, int *i);
-void					fix_string(t_fill_info *info, char *str);
+void					fix_string(t_fill_info *info, char *dest, char *src);
 char					**expand_variables(t_fill_info *info, char **args);
 int						test_ambiguous(t_fill_info *in, char **arg);
 extern t_args			*g_vars;
