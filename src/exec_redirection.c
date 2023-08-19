@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 21:43:07 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 21:48:16 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 21:51:37 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,24 @@ void	do_redirections(t_cmd_redir *head)
 		do_redirections_help(redir);
 		redir = redir->next;
 	}
+}
+
+int	has_char(char *s, char c)
+{
+	int	i;
+	int	quote[2];
+
+	quote[sin] = 0;
+	quote[doub] = 0;
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == '\'' && !quote[doub])
+			quote[sin] = !quote[sin];
+		if (s[i] == '\"' && !quote[sin])
+			quote[doub] = !quote[doub];
+		if (s[i] == c && !quote[doub] && !quote[sin])
+			return (1);
+	}
+	return (0);
 }

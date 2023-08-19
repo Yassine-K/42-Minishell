@@ -6,16 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 20:40:09 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 21:49:29 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/_types/_pid_t.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	checker(char **commands, int i)
 {
