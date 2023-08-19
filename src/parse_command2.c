@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 20:36:29 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:45:45 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,12 +251,36 @@ static int	is_a_redirection(char *str)
 	return (0);
 }
 
+void	red_help2(t_fill_info *info, char **commands, int *i, char *file_name)
+{
+	char		*heredoc_file;
+	t_cmd_redir	*redir;
+	
+	if (!ft_strncmp(commands[*i], "<", -1))
+	{
+		redir = ft_new_redir(INPUT, file_name);
+		(*i)++;
+		add_redir_in_back(&info->redir, redir);
+	}
+	if (!ft_strncmp(commands[*i], ">>", -1))
+	{
+		redir = ft_new_redir(APPEND, file_name);
+		(*i)++;
+		add_redir_in_back(&info->redir, redir);
+	}
+	if (!ft_strncmp(commands[*i], "<<", -1))
+	{
+		heredoc_file = get_herdoc_data(info, commands[++(*i)]);
+		redir = ft_new_redir(HEREDOC, heredoc_file);
+		add_redir_in_back(&info->redir, redir);
+	}
+}
+
 void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	char		**arr;
 	char		*file_name;
 	int			k;
-	char		*heredoc_file;
 	t_cmd_redir	*redir;
 
 	if (is_a_redirection(commands[*i]) && ft_strchr(commands[*i + 1], '$'))
@@ -279,24 +303,7 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 		(*i)++;
 		add_redir_in_back(&info->redir, redir);
 	}
-	if (!ft_strncmp(commands[*i], "<", -1))
-	{
-		redir = ft_new_redir(INPUT, file_name);
-		(*i)++;
-		add_redir_in_back(&info->redir, redir);
-	}
-	if (!ft_strncmp(commands[*i], ">>", -1))
-	{
-		redir = ft_new_redir(APPEND, file_name);
-		(*i)++;
-		add_redir_in_back(&info->redir, redir);
-	}
-	if (!ft_strncmp(commands[*i], "<<", -1))
-	{
-		heredoc_file = get_herdoc_data(info, commands[++(*i)]);
-		redir = ft_new_redir(HEREDOC, heredoc_file);
-		add_redir_in_back(&info->redir, redir);
-	}
+	red_help2(info, commands, i, file_name);
 }
 
 int	count_redirections(char *command)
