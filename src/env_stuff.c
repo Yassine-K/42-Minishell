@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:33:03 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 13:18:49 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 15:42:56 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,45 @@ int	ft_env_list_size(t_env **head)
 		tmp = tmp->next;
 	}
 	return (i);
+}
+
+void	my_exit2(t_command *command, int *status)
+{
+	if (is_arg_number(command->command_args[1]))
+	{
+		ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
+			is_arg_number(command->command_args[1]));
+		*status = 255;
+	}
+	else
+		*status = ft_atoi(command->command_args[1]);
+}
+
+void	my_exit(t_command *command)
+{
+	int	status;
+
+	status = 0;
+	if (!command->command_args[1])
+		status = g_vars->ex_status;
+	else if (command->command_args[1] && command->command_args[2])
+	{
+		if ((is_arg_number(command->command_args[1])
+				&& !is_arg_number(command->command_args[2]))
+			|| (is_arg_number(command->command_args[1])
+				&& is_arg_number(command->command_args[2])))
+		{
+			status = 255;
+			ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",
+				are_two_args_number(command->command_args));
+		}
+		else
+		{
+			status = 1;
+			ft_dprintf(2, "minishell: exit: too many arguments\n");
+		}
+	}
+	else
+		my_exit2(command, &status);
+	custom_exit(status);
 }

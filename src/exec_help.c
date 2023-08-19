@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 22:10:27 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 10:27:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 15:30:29 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int built_in_should_execute_in_main(t_command *cmd)
 	char	**arr;
 	if (!cmd->command_args[0])
 		return (0);
-	// if (!ft_strncmp(cmd->command_args[0], "cd", -1) && g_vars->command_count == 1)
-	// 	return (1);
 	if (!ft_strncmp(cmd->command_args[0], "export", -1) && cmd->command_args[1])
 	{
 		return (1);
