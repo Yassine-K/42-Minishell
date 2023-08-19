@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 16:23:08 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 16:23:19 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:51:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,99 +41,110 @@ int	does_redirection_exist(char *str)
 	return (count);
 }
 
-char	**extended_splitting(char **phrases)
+void	extended_splitting_init(int n[4], char **phrases, char ***arr)
 {
-	int		i;
-	int		count;
-	char	**arr;
-	int		j;
-	int		k;
-	int		x;
+	int	count;
 
-	i = -1;
+	n[i] = -1;
 	count = 0;
-	while (phrases[++i])
+	while (phrases[++n[i]])
 	{
-		if (phrases[i][0] != '"' && phrases[i][0] != '\''
-			&& !ft_strchr(phrases[i], '='))
+		if (phrases[n[i]][0] != '"' && phrases[n[i]][0] != '\''
+			&& !ft_strchr(phrases[n[i]], '='))
 		{
-			count += split_charset_word_count(phrases[i], "><");
-			count += does_redirection_exist(phrases[i]);
+			count += split_charset_word_count(phrases[n[i]], "><");
+			count += does_redirection_exist(phrases[n[i]]);
 		}
-		if (ft_strchr(phrases[i], '=') || phrases[i][0] == '"'
-			|| phrases[i][0] == '\'')
+		if (ft_strchr(phrases[n[i]], '=') || phrases[n[i]][0] == '"'
+			|| phrases[n[i]][0] == '\'')
 			count++;
 	}
-	arr = my_alloc(sizeof(char *) * (count + 1));
-	i = 0;
-	j = 0;
-	k = 0;
-	while (phrases[i])
+	*arr = my_alloc(sizeof(char *) * (count + 1));
+	n[i] = 0;
+	n[j] = 0;
+	n[k] = 0;
+}
+
+void	extended_splitting_help2(char **phrases, int n[4], char **arr)
+{
+	if ((phrases[n[i]][n[k]] == '<' && phrases[n[i]][n[k] + 1]
+			&& phrases[n[i]][n[k] + 1] == '<')
+		|| (phrases[n[i]][n[k]] == '>' && phrases[n[i]][n[k] + 1]
+			&& phrases[n[i]][n[k] + 1] == '>'))
 	{
-		if (phrases[i][0] == '"' || phrases[i][0] == '\''
-			|| ft_strchr(phrases[i], '='))
+		arr[n[j]] = ft_substr(phrases[n[i]], n[k], 2);
+		n[k]++;
+		n[j]++;
+	}
+	else if ((phrases[n[i]][n[k]] == '<' && !phrases[n[i]][n[k] + 1])
+		|| (phrases[n[i]][n[k]] == '<' && phrases[n[i]][n[k] + 1]
+			&& phrases[n[i]][n[k] + 1] != '<'))
+	{
+		arr[n[j]] = ft_substr(phrases[n[i]], n[k], 1);
+		n[j]++;
+	}
+	else if ((phrases[n[i]][n[k]] == '>' && !phrases[n[i]][n[k] + 1])
+		|| (phrases[n[i]][n[k]] == '>' && phrases[n[i]][n[k] + 1]
+			&& phrases[n[i]][n[k] + 1] != '>'))
+	{
+		arr[n[j]] = ft_substr(phrases[n[i]], n[k], 1);
+		n[j]++;
+	}
+}
+
+void	extended_splitting_help(char **phrases, int n[4], char **arr)
+{
+	n[k] = 0;
+	while (phrases[n[i]][n[k]])
+	{
+		if (does_redirection_exist(&phrases[n[i]][n[k]]))
 		{
-			arr[j++] = phrases[i];
-			i++;
-		}
-		if (!phrases[i])
-			break ;
-		if (!does_redirection_exist(phrases[i]))
-		{
-			arr[j] = phrases[i];
-			j++;
+			n[3] = n[k];
+			while (phrases[n[i]][n[3]] && phrases[n[i]][n[3]] != '<'
+				&& phrases[n[i]][n[3]] != '>')
+				n[3]++;
+			if (phrases[n[i]][n[3]] && n[3] - n[k] > 0)
+			{
+				arr[n[j]++] = ft_substr(phrases[n[i]], n[k], n[3] - n[k]);
+				n[k] += n[3] - n[k];
+			}
+			extended_splitting_help2(phrases, n, arr);
 		}
 		else
 		{
-			k = 0;
-			while (phrases[i][k])
-			{
-				if (does_redirection_exist(&phrases[i][k]))
-				{
-					x = k;
-					while (phrases[i][x] && phrases[i][x] != '<'
-						&& phrases[i][x] != '>')
-						x++;
-					if (phrases[i][x] && x - k > 0)
-					{
-						arr[j++] = ft_substr(phrases[i], k, x - k);
-						k += x - k;
-					}
-					if ((phrases[i][k] == '<' && phrases[i][k + 1]
-							&& phrases[i][k + 1] == '<')
-						|| (phrases[i][k] == '>' && phrases[i][k + 1]
-							&& phrases[i][k + 1] == '>'))
-					{
-						arr[j] = ft_substr(phrases[i], k, 2);
-						k++;
-						j++;
-					}
-					else if ((phrases[i][k] == '<' && !phrases[i][k + 1])
-						|| (phrases[i][k] == '<' && phrases[i][k + 1]
-							&& phrases[i][k + 1] != '<'))
-					{
-						arr[j] = ft_substr(phrases[i], k, 1);
-						j++;
-					}
-					else if ((phrases[i][k] == '>' && !phrases[i][k + 1])
-						|| (phrases[i][k] == '>' && phrases[i][k + 1]
-							&& phrases[i][k + 1] != '>'))
-					{
-						arr[j] = ft_substr(phrases[i], k, 1);
-						j++;
-					}
-				}
-				else
-				{
-					arr[j++] = ft_substr(phrases[i], k, ft_strlen(phrases[i])
-						- k);
-					k += ft_strlen(phrases[i]) - k;
-				}
-				k++;
-			}
+			arr[n[j]++] = ft_substr(phrases[n[i]], n[k],
+					ft_strlen(phrases[n[i]]) - n[k]);
+			n[k] += ft_strlen(phrases[n[i]]) - n[k];
 		}
-		i++;
+		n[k]++;
 	}
-	arr[j] = NULL;
+}
+
+char	**extended_splitting(char **phrases)
+{
+	int		n[4];
+	char	**arr;
+
+	extended_splitting_init(n, phrases, &arr);
+	while (phrases[n[i]])
+	{
+		if (phrases[n[i]][0] == '"' || phrases[n[i]][0] == '\''
+			|| ft_strchr(phrases[n[i]], '='))
+		{
+			arr[n[j]++] = phrases[n[i]];
+			n[i]++;
+		}
+		if (!phrases[n[i]])
+			break ;
+		if (!does_redirection_exist(phrases[n[i]]))
+		{
+			arr[n[j]] = phrases[n[i]];
+			n[j]++;
+		}
+		else
+			extended_splitting_help(phrases, n, arr);
+		n[i]++;
+	}
+	arr[n[j]] = NULL;
 	return (arr);
 }
