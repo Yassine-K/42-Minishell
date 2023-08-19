@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 15:56:28 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 17:36:24 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,18 @@ char	*is_arg_number(char *str)
 
 void	fd_handler(int i)
 {
-	if ((g_vars->pipe == 2 || g_vars->pipe == 3) || (i > 0 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[(i - 1) * 2] == '1'))))
+	if ((g_vars->pipe == 2 || g_vars->pipe == 3)
+		|| (i > 0 && (!g_vars->op[0] || (g_vars->op[0]
+					&& g_vars->op[(i - 1) * 2] == '1'))))
 	{
 		if (g_vars->pipe == 2)
 			g_vars->pipe = 0;
 		close(g_vars->prev_pipefd[0]);
 		close(g_vars->prev_pipefd[1]);
 	}
-	if ((g_vars->pipe == 1 || g_vars->pipe == 2 || g_vars->pipe == 3) || (i < g_vars->command_count - 1 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[i * 2] == '1'))))
+	if ((g_vars->pipe == 1 || g_vars->pipe == 2 || g_vars->pipe == 3)
+		|| (i < g_vars->command_count - 1 && (!g_vars->op[0]
+				|| (g_vars->op[0] && g_vars->op[i * 2] == '1'))))
 	{
 		g_vars->pipe = 0;
 		g_vars->prev_pipefd[0] = g_vars->next_pipefd[0];
