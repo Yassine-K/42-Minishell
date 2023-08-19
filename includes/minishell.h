@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:55 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:12:15 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void					doub_sin_skip(int *sin, int *doub, char *s, int i);
 void					handle_child(t_command *tmp, int i);
 void					remove_spaces_in_between(void);
 char					*operations(char *s);
+int						ft_strrevcmp(char *s1, char *s2);
 
 //executing phase
 
