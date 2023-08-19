@@ -6,12 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 10:26:59 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 15:56:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
 
 void	doub_sin_skip(int *sin, int *doub, char *s, int i)
 {
@@ -23,7 +22,7 @@ void	doub_sin_skip(int *sin, int *doub, char *s, int i)
 			*(doub) = !*(doub);
 }
 
-char *are_two_args_number(char **str)
+char	*are_two_args_number(char **str)
 {
 	int	i;
 	int	j;
@@ -58,17 +57,15 @@ char	*is_arg_number(char *str)
 
 void	fd_handler(int i)
 {
-	if ((g_vars->pipe == 2  || g_vars->pipe == 3)|| (i > 0 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[(i - 1) * 2] == '1'))))
+	if ((g_vars->pipe == 2 || g_vars->pipe == 3) || (i > 0 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[(i - 1) * 2] == '1'))))
 	{
 		if (g_vars->pipe == 2)
 			g_vars->pipe = 0;
-		// printf("close prev pipe\n");
 		close(g_vars->prev_pipefd[0]);
 		close(g_vars->prev_pipefd[1]);
 	}
-	if ((g_vars->pipe == 1 || g_vars->pipe == 2 || g_vars->pipe == 3)|| (i < g_vars->command_count - 1 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[i * 2] == '1'))))
+	if ((g_vars->pipe == 1 || g_vars->pipe == 2 || g_vars->pipe == 3) || (i < g_vars->command_count - 1 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[i * 2] == '1'))))
 	{
-		// printf("gg\n");
 		g_vars->pipe = 0;
 		g_vars->prev_pipefd[0] = g_vars->next_pipefd[0];
 		g_vars->prev_pipefd[1] = g_vars->next_pipefd[1];

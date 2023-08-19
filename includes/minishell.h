@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 15:26:05 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:07:04 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,18 @@ typedef struct t_args
 	int					pipe;
 }						t_args;
 
-// 	aaex_status,
-// 	aais_interupted
 int						ft_strrevcmp(char *s1, char *s2);
 void					prepare_commands(char **commands);
 void					parsing_initial_split(char **commands);
 char					**get_path(void);
 char					*get_command_path(char **path, char *command);
 
-//command linked list stuff
 t_command				*ft_last_command(t_command *lst);
 void					add_command_in_back(t_command **head, t_command *node);
 void					add_command_in_front(t_command **head, t_command *node);
 int						ft_command_list_size(t_command **head);
 t_command				*ft_new_command(t_fill_info *info);
 
-//env linked list stuff
 t_env					*ft_last_env(t_env *lst);
 void					add_env_in_back(t_env **head, t_env *node);
 void					add_env_in_front(t_env **head, t_env *node);
@@ -121,7 +117,6 @@ void					ft_node_remove_if (t_env **head, char *env_id);
 int						ft_env_list_size(t_env **head);
 void					the_search_env(t_env **search, char **args);
 
-//parsing commands;
 void					parse_commands(char *line);
 char					**initial_split(char *s, int sw);
 char					**split_command(char *s);
@@ -151,14 +146,11 @@ void					remove_spaces_in_between(void);
 char					*operations(char *s);
 int						ft_strrevcmp(char *s1, char *s2);
 
-//executing phase
-
 void					execution_phase(void);
 void					execute_built_in(t_command *command);
 void					execute( t_command **tmp, int *index);
 char					**convert_env_to_arr(t_env *head);
 
-//builtins
 int						is_built_in(char *name);
 int						built_in_should_execute_in_main(t_command *tmp);
 void					echo(t_command *command);
@@ -171,7 +163,6 @@ void					my_exit(t_command *command);
 int						analyze_args(char **arg);
 void					print_command(t_command *command);
 
-//signals
 void					init_termio(void);
 void					handle_signals(int sig);
 
@@ -190,7 +181,7 @@ int						does_redirection_exist(char *str);
 void					red_help(t_fill_info *info, char **commands, int *i);
 void					fix_string(t_fill_info *info, char *str);
 char					**expand_variables(t_fill_info *info, char **args);
-
+int						test_ambiguous(t_fill_info *in, char **arg);
 extern t_args			*g_vars;
 
 enum					e_nums
