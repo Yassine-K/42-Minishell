@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:50:09 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 17:52:19 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,19 +155,23 @@ char	*operations(char *s)
 	return (op);
 }
 
-char	**initial_split(char *s, int sw)
+void	initial_split_init(int n[6])
 {
-	int		n[6];
-	int		phrase_count;
-	int		ph_len;
-	char	**phrases;
-
 	n[i] = -1;
 	n[j] = 0;
 	n[k] = 0;
 	n[si] = 0;
 	n[dou] = 0;
-	ph_len = 0;
+	n[ph_len] = 0;
+}
+
+char	**initial_split(char *s, int sw)
+{
+	int		n[6];
+	int		phrase_count;
+	char	**phrases;
+
+	initial_split_init(n);
 	phrase_count = count_words(s);
 	g_vars->command_count = phrase_count;
 	g_vars->op = operations(s);
@@ -178,11 +182,11 @@ char	**initial_split(char *s, int sw)
 		g_vars->command_count--;
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
 	while (++n[i] < ft_strlen(s))
-		split_cases(n, ph_len, s, phrases);
-	ph_len = n[i] - n[j];
-	phrases[n[k]] = (char *)my_alloc((ph_len + 1) * sizeof(char));
-	ft_memcpy(phrases[n[k]], s + n[j], ph_len);
-	phrases[n[k]][ph_len] = '\0';
+		split_cases(n, n[ph_len], s, phrases);
+	n[ph_len] = n[i] - n[j];
+	phrases[n[k]] = (char *)my_alloc((n[ph_len] + 1) * sizeof(char));
+	ft_memcpy(phrases[n[k]], s + n[j], n[ph_len]);
+	phrases[n[k]][n[ph_len]] = '\0';
 	n[k]++;
 	phrases[n[k]] = NULL;
 	if (!check_validity(phrases, phrase_count, sw))
