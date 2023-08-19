@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 18:02:33 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 21:44:11 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void					fd_handler(int i);
 char					*is_arg_number(char *str);
 
 char					**split_arg(char *arg);
-
+void					do_redirections(t_cmd_redir *head);
 t_cmd_redir				*ft_last_redir(t_cmd_redir *lst);
 void					add_redir_in_back(t_cmd_redir **head,
 							t_cmd_redir *node);
