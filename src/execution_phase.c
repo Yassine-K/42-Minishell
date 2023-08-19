@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:08:47 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:27:56 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ int	builtin_should_execute_in_child(t_command *tmp)
 		cd(tmp);
 		custom_exit(0);
 	}
-	return 0;
+	return (0);
 }
 
 static void	handle_child3(t_command *tmp)
 {
-	if(!builtin_should_execute_in_child(tmp))
+	if (!builtin_should_execute_in_child(tmp))
 	{
 		execve(tmp->command_path, tmp->command_args,
 			convert_env_to_arr(g_vars->env_head));
@@ -70,7 +70,7 @@ void do_redirections(t_cmd_redir *head)
 {
 
 	// t_cmd_redir * tmp = g_vars->command_head->redir;
-	// while(tmp)
+	// while (tmp)
 	// {
 	// 	printf("type: %d   file name: %s\n", tmp->type, tmp->file);
 	// 	tmp = tmp->next;
@@ -78,9 +78,9 @@ void do_redirections(t_cmd_redir *head)
 	
 	t_cmd_redir *redir = head;
 	int fd;
-	while(redir)
+	while (redir)
 	{
-		if(redir->type == INPUT)
+		if (redir->type == INPUT)
 		{
 			fd = open(redir->file, O_RDONLY);
 			if (fd == -1)
@@ -88,7 +88,7 @@ void do_redirections(t_cmd_redir *head)
 			dup2(fd, 0);
 			close(fd);
 		}
-		else if(redir->type == OUTPUT)
+		else if (redir->type == OUTPUT)
 		{
 			fd = open(redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			if (fd == -1)
@@ -96,7 +96,7 @@ void do_redirections(t_cmd_redir *head)
 			dup2(fd, 1);
 			close(fd);
 		}
-		else if(redir->type == APPEND)
+		else if (redir->type == APPEND)
 		{
 			fd = open(redir->file, O_RDWR | O_APPEND | O_CREAT, 0644);
 			if (fd == -1)
@@ -104,7 +104,7 @@ void do_redirections(t_cmd_redir *head)
 			dup2(fd, 1);
 			close(fd);
 		}
-		else if(redir->type == HEREDOC)
+		else if (redir->type == HEREDOC)
 		{
 			fd = open("/tmp/herdoc_data", O_RDONLY);
 			if (fd == -1)
@@ -122,7 +122,7 @@ void	handle_child(t_command *tmp, int i)
 	{
 		// printf("handle child pipe: 2 cmd: %s\n",tmp->command_args[0]);
 
-		// if(g_vars->pipe == 2)
+		// if (g_vars->pipe == 2)
 		// {
 
 		// char line[101];

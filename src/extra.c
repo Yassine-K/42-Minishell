@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:26:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*is_arg_number(char *str)
 	j = -1;
 	while (str[++j])
 	{
-		if(str[j] == '-' && str[j + 2] == '\0')
+		if (str[j] == '-' && str[j + 2] == '\0')
 			return (0);
 		if (str[j] > '9' || str[j] < '0')
 			return (&str[j]);
@@ -60,7 +60,7 @@ void	fd_handler(int i)
 {
 	if ((g_vars->pipe == 2  || g_vars->pipe == 3)|| (i > 0 && (!g_vars->op[0] || (g_vars->op[0] && g_vars->op[(i - 1) * 2] == '1'))))
 	{
-		if(g_vars->pipe == 2)
+		if (g_vars->pipe == 2)
 			g_vars->pipe = 0;
 		// printf("close prev pipe\n");
 		close(g_vars->prev_pipefd[0]);

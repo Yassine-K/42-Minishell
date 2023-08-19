@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 21:21:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:31:30 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	count_args(char **commands)
 	i = 0;
 	while (commands[i])
 	{
-		// if(!commands[i][0])
+		// if (!commands[i][0])
 		// {
 		// 	counter--;
 		// 	i++;
@@ -118,7 +118,7 @@ void	parse_commands(char *line)
 	if (!g_vars->initial_commands)
 		return ;
 	remove_spaces_in_between();
-	if(!parsing_commands( g_vars->initial_commands))
-		return;
+	if (!parsing_commands( g_vars->initial_commands))
+		return ;
 	execution_phase();
 }

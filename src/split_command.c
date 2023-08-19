@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabra <abouabra@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:17 by abouabra          #+#    #+#             */
-/*   Updated: 2023/05/31 19:49:41 by abouabra         ###   ########.fr       */
+/*   Updated: 2023/08/19 10:30:01 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ char **extended_splitting(char **phrases)
     int count = 0;
     while (phrases[++i])
     {
-		if(phrases[i][0] != '"' && phrases[i][0] != '\'' && !ft_strchr(phrases[i], '='))
+		if (phrases[i][0] != '"' && phrases[i][0] != '\'' && !ft_strchr(phrases[i], '='))
 		{
         	count += split_charset_word_count(phrases[i], "><");
         	count += does_redirection_exist(phrases[i]);
 		}
-		if(ft_strchr(phrases[i], '=') || phrases[i][0] == '"' || phrases[i][0] == '\'')
+		if (ft_strchr(phrases[i], '=') || phrases[i][0] == '"' || phrases[i][0] == '\'')
 			count++;
     }
     char **arr = my_alloc(sizeof(char *) * (count + 1));
@@ -125,13 +125,13 @@ char **extended_splitting(char **phrases)
 	int k = 0;
     while (phrases[i])
     {
-		if(phrases[i][0] == '"' || phrases[i][0] == '\'' || ft_strchr(phrases[i], '='))
+		if (phrases[i][0] == '"' || phrases[i][0] == '\'' || ft_strchr(phrases[i], '='))
 		{
 			arr[j++] = phrases[i];
 			i++;
 		}
-		if(!phrases[i])
-			break;
+		if (!phrases[i])
+			break ;
         if (!does_redirection_exist(phrases[i]))
         {
             arr[j] = phrases[i];
@@ -145,10 +145,10 @@ char **extended_splitting(char **phrases)
 				if (does_redirection_exist(&phrases[i][k]))
                 {
 					int x = k;
-					while(phrases[i][x] && phrases[i][x] != '<' && phrases[i][x] != '>')
+					while (phrases[i][x] && phrases[i][x] != '<' && phrases[i][x] != '>')
 						x++;
 					// printf("|%s|   |%s|    %d\n",&phrases[i][k],&phrases[i][x],x-k);
-					if(phrases[i][x] && x-k > 0)
+					if (phrases[i][x] && x-k > 0)
 					{
 						arr[j++] = ft_substr(phrases[i], k, x-k);
 						k += x-k;

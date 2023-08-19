@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:26:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,18 +167,18 @@ char	**initial_split(char *s, int sw)
 	phrase_count = count_words(s);
 	g_vars->command_count = phrase_count;
 	g_vars->op = operations(s);
-	if(sw == 1 && g_vars->op[0])
+	if (sw == 1 && g_vars->op[0])
 		g_vars->command_count--;
-	if(sw == 1 && ft_strlen(g_vars->op) >=2 && (s[i] == '|' || s[i] == '&') && (s[ft_strlen(s)-1] == '|' || s[ft_strlen(s)-1] == '&'))
+	if (sw == 1 && ft_strlen(g_vars->op) >=2 && (s[i] == '|' || s[i] == '&') && (s[ft_strlen(s)-1] == '|' || s[ft_strlen(s)-1] == '&'))
 		g_vars->command_count--;
 
 	// printf("string: |%s| && count: %d && sw: %d && op: %s\n", s, g_vars->command_count,sw,g_vars->op);
 	phrases = (char **)my_alloc((phrase_count + 1) * sizeof(char *));
 	
 	// printf("gg\n");
-	// if(sw && !g_vars->op[0])
+	// if (sw && !g_vars->op[0])
 	// 	return NULL;
-	// if(sw && g_vars->op[0] && (ft_strlen(g_vars->op)/2) != g_vars->command_count -1)
+	// if (sw && g_vars->op[0] && (ft_strlen(g_vars->op)/2) != g_vars->command_count -1)
 	// 	return NULL;
 	while (++n[i] < ft_strlen(s))
 		split_cases(n, ph_len, s, phrases);

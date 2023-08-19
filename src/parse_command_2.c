@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:32:57 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void fix_string(t_fill_info *info, char *str)
     (void)info;
 	char c;
 
-	if(str[0] && str[1] && !str[2] && str[0] == str[1])
-		return;
-	if(ft_strchr(str, '=') || ft_strchr(str, '$'))
-		return;
+	if (str[0] && str[1] && !str[2] && str[0] == str[1])
+		return ;
+	if (ft_strchr(str, '=') || ft_strchr(str, '$'))
+		return ;
     char *dest = str;
     char *src = str;
 	(void) info;
@@ -78,9 +78,9 @@ void fix_string(t_fill_info *info, char *str)
         if (*src == '"' || *src == '\'')
         {
             c = *src;
-			if(c == '\'')
+			if (c == '\'')
 				info->quote_type = 1;
-			else if(c == '\"')
+			else if (c == '\"')
 				info->quote_type = 2;
             src++;
 
@@ -119,17 +119,17 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		int j = -1;
 		while (arr[i][++j])
 		{
-			if(arr[i][j] == '\'')
+			if (arr[i][j] == '\'')
 				sin++;	
-			else if(arr[i][j] == '\"')
+			else if (arr[i][j] == '\"')
 				dubl++;
 		}
 	}
-	if(sin % 2 != 0 || dubl % 2 != 0)
+	if (sin % 2 != 0 || dubl % 2 != 0)
 	{
 		ft_dprintf(2, "minishell: unexpected EOF while looking for matching\n");
 		g_vars->ex_status = 2;
-		return 0;
+		return (0);
 	}
 	i = -1;
 	while (arr[++i])
@@ -145,7 +145,7 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		else if (arr[i][0] == '\"'  && arr[i][1]  && arr[i][1] != '\"')
 			rm_qts_help(&num_2, &arr[i], "\"", info);
 	}
-	return 1;
+	return (1);
 }
 
 
@@ -157,14 +157,14 @@ char *gg(char *original_string,int should_expand)
 	char *final ="";
 	i = -1;
 	char tmp[2];
-	// if(ft_strnstr(original_string, "$?", -1))
+	// if (ft_strnstr(original_string, "$?", -1))
 	// 	return (original_string);
-	while(original_string[++i])
+	while (original_string[++i])
 	{
-		if(original_string[i] == '$' && should_expand)
+		if (original_string[i] == '$' && should_expand)
 		{
 			i++;
-			if(original_string[i] == '?')
+			if (original_string[i] == '?')
 			{
 				char *data = ft_itoa(g_vars->ex_status);
 				final = ft_strjoin(final, data);
@@ -173,14 +173,14 @@ char *gg(char *original_string,int should_expand)
 			{
 
 			int j=-1;
-			while(original_string[++j + i])
+			while (original_string[++j + i])
 			{
-				if(ft_strchr(" \"'\n", original_string[j + i]))
-					break;
+				if (ft_strchr(" \"'\n", original_string[j + i]))
+					break ;
 			}
 			char *id = ft_substr(original_string , i, j);
 			char *data = get_env_data(id);
-			if(!data)
+			if (!data)
 				data = "";
 			// printf("id: |%s|        data: |%s|\n", id,data);
 			final = ft_strjoin(final, data);
@@ -202,15 +202,15 @@ char *gg(char *original_string,int should_expand)
 
 char	*expand_env(t_fill_info *info, char *str)
 {
-	if(!str || !ft_strchr(str, '$'))
+	if (!str || !ft_strchr(str, '$'))
 		return (str);
 	int should_expand;
 	should_expand = 1;
 	// printf("expand env: %s\n", str);
 	// char *tmp = ft_strchr(str, '$');
-	// if(tmp && tmp[-1] && (tmp[-1] != '\'' || tmp[-1] != '"'))
+	// if (tmp && tmp[-1] && (tmp[-1] != '\'' || tmp[-1] != '"'))
 	// 	info->quote_type = 0;
-	if(info->quote_type == 1 || info->quote_type == 2)
+	if (info->quote_type == 1 || info->quote_type == 2)
 		should_expand = 0;
 		
 	// printf("should_expand: %d    Mode: %d\n", should_expand, mode);
@@ -225,26 +225,26 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	char	*total;
 
 	// printf("limiter: %s     qt: %d\n", limiter, info->quote_type);
-	limiter = expand_env(info,ft_strtrim(limiter,"\"\'"));
+	limiter = expand_env(info,ft_strtrim(limiter, "\"\'"));
 	limiter = ft_strjoin(limiter, "\n");
 	total = "";
 	g_vars->is_running = 3;
-	if(!isatty(0))
+	if (!isatty(0))
 		g_vars->heredocs_fd = 0;
 	else
 		g_vars->heredocs_fd = dup(0);
 	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->new_term);
 	while (1)
 	{
-		if(!g_vars->interrupted_mode && isatty(STDIN_FILENO))
+		if (!g_vars->interrupted_mode && isatty(STDIN_FILENO))
 			ft_dprintf(1, "> ");
 		str = get_next_line(g_vars->heredocs_fd);
 		// str = get_next_line(0);
-		if(g_vars->interrupted_mode == 3)
+		if (g_vars->interrupted_mode == 3)
 		{
 			g_vars->ex_status = 1;
 			total = "";
-			break;
+			break ;
 		}
 		char *ww = expand_env(info,str);
 		if (!ww || (ww && !ft_strncmp(ww, limiter, -1)))
@@ -253,7 +253,7 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 		total = ft_strjoin(total, ww);
 	}
 	g_vars->is_running = 0;
-	if(isatty(0))
+	if (isatty(0))
 		close(g_vars->heredocs_fd);
 	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->old_term);
 	char *name = "/tmp/herdoc_data";
@@ -265,18 +265,18 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 }
 static int is_a_redirection(char *str)
 {
-	if(!str)
-		return 0;
-	if(!ft_strncmp(str, ">", -1) || !ft_strncmp(str, "<", -1) || !ft_strncmp(str, ">>", -1) || !ft_strncmp(str, "<<", -1))
-		return 1;
-	return 0;
+	if (!str)
+		return (0);
+	if (!ft_strncmp(str, ">", -1) || !ft_strncmp(str, "<", -1) || !ft_strncmp(str, ">>", -1) || !ft_strncmp(str, "<<", -1))
+		return (1);
+	return (0);
 }
 
 void	red_help(t_fill_info *info, char **commands, int *i)
 {
 	char **arr;
 	char *file_name;
-	if(is_a_redirection(commands[*i]) && ft_strchr(commands[*i + 1], '$'))
+	if (is_a_redirection(commands[*i]) && ft_strchr(commands[*i + 1], '$'))
 	{
 		arr = my_alloc(sizeof(char *) * 2);
 		arr[0] = ft_strdup(commands[*i + 1]);;
@@ -285,7 +285,7 @@ void	red_help(t_fill_info *info, char **commands, int *i)
 		int k = -1;
 		while (arr[++k])
 			fix_string(info, arr[k]);
-		file_name = ft_strtrim(*arr," ");
+		file_name = ft_strtrim(*arr, " ");
 	}
 	else
 		file_name = commands[*i + 1];
@@ -337,7 +337,7 @@ int count_redirections(char *command)
 					i++;
                     count++;
 				}
-				else if(i + 1 < len && command[i + 1] != ' ' && command[i + 1] != '<')
+				else if (i + 1 < len && command[i + 1] != ' ' && command[i + 1] != '<')
                     count++;
 
             }
@@ -348,7 +348,7 @@ int count_redirections(char *command)
 					i++;
                     count++;
 				}
-				else if(command[i + 1] != ' ' && command[i + 1] == '>')
+				else if (command[i + 1] != ' ' && command[i + 1] == '>')
                     count++;
             }
             is_parsing_command = 0; // Switch to parsing redirection

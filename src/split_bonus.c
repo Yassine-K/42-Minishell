@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayman <ayman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/02 17:16:58 by ayman            ###   ########.fr       */
+/*   Updated: 2023/08/19 10:32:57 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	word_len(char *s, char *c)
 			i++;
 		}
 	}
-	// if(active && !s[i])
+	// if (active && !s[i])
 	// 	return -1;
 	return (i);
 }
@@ -83,7 +83,7 @@ static void	split_char_init1(int n[4])
 static void	split_par_help(char **arr, char *s, int n[4])
 {
 	n[ac]++;
-	// if()
+	// if ()
 	arr[++n[j]] = my_alloc(word_len(s + n[i], ")") + 1);
 	while (n[ac] > 0)
 	{
@@ -104,7 +104,7 @@ static void	split_par_help(char **arr, char *s, int n[4])
 	}
 	arr[n[j]][++n[w]] = '\0';
 	arr[n[j]] = ft_strjoin("(", arr[n[j]]);
-	arr[n[j]] = ft_strjoin( arr[n[j]],")");
+	arr[n[j]] = ft_strjoin( arr[n[j]], ")");
 }
 
 static void	split_par_help2(char **arr, char *s, int n[4])
@@ -152,12 +152,12 @@ char	**split_par(char *s)
 // 	str = "ls -a && '(ls -l)'";
 // 	char **split;
 // 	split = split_par(str);
-// 	if(!split)
+// 	if (!split)
 // 	{
 // 		printf("error\n");
-// 		return 0;
+// 		return (0);
 // 	}
 // 	for (int i = 0; split[i]; i++)
 // 		printf("%s\n", split[i]);
-// 	return 0;
+// 	return (0);
 // }

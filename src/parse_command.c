@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:27:56 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	check_permision_help(char *command_path, char *name, int a)
 	{
 		if (!command_path)
 		{
-			if(!get_env_data("PATH") || ft_strchr(name, '/'))
+			if (!get_env_data("PATH") || ft_strchr(name, '/'))
 				ft_dprintf(2, "minishell: %s: No such file or directory\n", name);
 			else
 				ft_dprintf(2, "minishell: %s: command not found\n", name);
@@ -102,10 +102,10 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 	int i = -1;
 	while (arg[++i])
 	{
-		if(does_redirection_exist(arg[i]) && arg[i +1] && ft_strncmp(arg[i], "<<", -1))
+		if (does_redirection_exist(arg[i]) && arg[i +1] && ft_strncmp(arg[i], "<<", -1))
 		{
-			// if(!ft_strchr(arg[i + 1], '$'))
-			// 	return 1;
+			// if (!ft_strchr(arg[i + 1], '$'))
+			// 	return (1);
 			char *name = ft_strdup(arg[i + 1]);
 			// printf("name: |%s|\n", name);
 			char **arr = my_alloc(sizeof(char *) * 2);
@@ -123,35 +123,35 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 			k = -1;
 			while (arr[++k]);
 				// printf("after: |%s|\n", arr[k]);
-			if(k != 1)
+			if (k != 1)
 			{
 				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", name);
 				g_vars->ex_status = 1;
-				return 0;
+				return (0);
 			}
-			if(!rederiction_error(arg, i))
+			if (!rederiction_error(arg, i))
 			{
 				// printf("|%s|    |%s|\n", arg[i], arg[i + 1]);
-				return 0;
+				return (0);
 			}
 		}
-		else if(does_redirection_exist(arg[i]) && !arg[i +1])
+		else if (does_redirection_exist(arg[i]) && !arg[i +1])
 		{
-			if(!rederiction_error(arg, i))
+			if (!rederiction_error(arg, i))
 			{
-				return 0;
+				return (0);
 			}
 		}
 	}
-	return 1;
+	return (1);
 		// printf("a[arr][%d]: |%s|\n", i, arg[i]);
 }
 
 static int	retrieve_comm(t_fill_info *in, char **a[3])
 {
 	// printf("\n\n\n\n");
-	if(!test_ambiguous(in, a[arr]))
-		return 0;
+	if (!test_ambiguous(in, a[arr]))
+		return (0);
 	int i = -1;
 	while (a[arr][++i])
 		red_help(in, a[arr], &i);
@@ -161,7 +161,7 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 	// int i = -1;
 	// while (a[args][++i])
 	// 	printf("a[arr][%d]: |%s|\n", i, a[args][i]);
-	// if(a[args][1])
+	// if (a[args][1])
 	// 	printf("command: |%s|\n", a[args][1]);
 	// a[args] = remove_empty_args(a[args]);
 	i = -1;
@@ -179,7 +179,7 @@ static int	retrieve_comm(t_fill_info *in, char **a[3])
 	// }
 	in->command_path = command_path;
 	in->command_args = a[args];
-	return 1;
+	return (1);
 }
 
 int	parsing_commands(char **commands)
@@ -198,19 +198,19 @@ int	parsing_commands(char **commands)
 			continue ;
 		ft_memset(info, 0, sizeof(t_fill_info));
 		a[arr] = split_command(commands[i]);
-		if(!remove_quotes(info, a[arr]))
-			return 0;
+		if (!remove_quotes(info, a[arr]))
+			return (0);
  
 		// int i = -1;
 		// while (a[arr][++i])
 		// 	printf("a[arr][%d]: |%s|\n", i, a[arr][i]);
 		// printf("\n\n\n\n");
-		if(!retrieve_comm(info, a))
-			return 0;
+		if (!retrieve_comm(info, a))
+			return (0);
 			
 
 		node = ft_new_command(info);
 		add_command_in_back(&g_vars->command_head, node);
 	}
-	return 1;
+	return (1);
 }

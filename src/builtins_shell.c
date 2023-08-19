@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 09:42:37 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 10:32:57 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	cd(t_command *command)
 
 	if (!command->command_args[1])
 		command->command_args[1] = get_env_data( "HOME");
-	if(!command->command_args[1])
+	if (!command->command_args[1])
 	{
 		ft_dprintf(2, "minishell: cd: HOME not set\n");
 		g_vars->ex_status = 1;
@@ -75,7 +75,7 @@ void	echo(t_command *command)
 	i = 0;
 	if (!command->command_args[1])
 	{
-		ft_dprintf(1,"\n");
+		ft_dprintf(1, "\n");
 		return ;
 	}
 	while (!ft_strncmp("-n", command->command_args[i +1], -1)
@@ -86,12 +86,12 @@ void	echo(t_command *command)
 	}
 	while (command->command_args[++i])
 	{
-		ft_dprintf(1,"%s", command->command_args[i]);
+		ft_dprintf(1, "%s", command->command_args[i]);
 		if (command->command_args[i + 1])
-			ft_dprintf(1," ");
+			ft_dprintf(1, " ");
 	}
 	if (is_arg)
-		ft_dprintf(1,"\n");
+		ft_dprintf(1, "\n");
 }
 
 void					my_exit(t_command *command)
@@ -100,25 +100,25 @@ void					my_exit(t_command *command)
 
 	if (!command->command_args[1])
 		status = g_vars->ex_status;
-	else if(command->command_args[1] && command->command_args[2])
+	else if (command->command_args[1] && command->command_args[2])
 	{
-		if((is_arg_number(command->command_args[1]) && !is_arg_number(command->command_args[2]))
+		if ((is_arg_number(command->command_args[1]) && !is_arg_number(command->command_args[2]))
 		|| (is_arg_number(command->command_args[1]) && is_arg_number(command->command_args[2])))
 		{
 			status = 255;
-			ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",are_two_args_number(command->command_args));
+			ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",are_two_args_number(command->command_args));
 		}
 		else
 		{
 			status = 1;
-			ft_dprintf(2,"minishell: exit: too many arguments\n");
+			ft_dprintf(2, "minishell: exit: too many arguments\n");
 		}
 	}
 	else
 	{
-		if(is_arg_number(command->command_args[1]))
+		if (is_arg_number(command->command_args[1]))
 		{
-			ft_dprintf(2,"minishell: exit: %s: numeric argument required\n",is_arg_number(command->command_args[1]));
+			ft_dprintf(2, "minishell: exit: %s: numeric argument required\n",is_arg_number(command->command_args[1]));
 			status = 255;
 		}
 		else
@@ -131,6 +131,6 @@ void	pwd(void)
 {
 	char *path = getcwd(NULL, 0);
 	garbage_collector(path, 0);
-	ft_dprintf(1,"%s\n", path);
+	ft_dprintf(1, "%s\n", path);
 	g_vars->ex_status = 0;
 }
