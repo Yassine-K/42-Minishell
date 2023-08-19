@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 18:09:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:10:40 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 			info->quote_type = 2;
 	}
 }
+
 void	fix_string2(t_fill_info *info, char **dest, char **src)
 {
 	char	c;
@@ -45,13 +46,14 @@ void	fix_string2(t_fill_info *info, char **dest, char **src)
 	(*src)++;
 	while (*(*src) && *(*src) != c)
 	{
-		*(*dest)= *(*src);
+		*(*dest) = *(*src);
 		(*dest)++;
 		(*src)++;
 	}
 	if (*(*src) == c)
 		(*src)++;
 }
+
 void	fix_string(t_fill_info *info, char *dest, char *src)
 {
 	if (src[0] && src[1] && !src[2] && src[0] == src[1])

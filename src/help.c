@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 10:32:57 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:28:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,6 +485,8 @@ int	nested_par(char **arr, int check, int index)
 			){
 				// printf("in main && both i start and end with pipe arr: |%s| && arr+1: |%s|\n",arr[i],arr[i+1]);
 				g_vars->pipe = 3;
+				if(ft_strlen(arr[i]) < 2)
+					g_vars->pipe = 0;
 				g_vars->prev_pipefd[0] = g_vars->next_pipefd[0];
 				g_vars->prev_pipefd[1] = g_vars->next_pipefd[1];				
 			}
