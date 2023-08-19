@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 16:07:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:14:25 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ char					**split_command(char *s);
 
 void					set_env(void);
 char					*get_env_data(char *id);
-int						remove_quotes(t_fill_info *info,
-							char **arr);
+int						remove_quotes(t_fill_info *info, char **arr);
+void					split_char_init1(int n[4]);
 char					*get_herdoc_data(t_fill_info *info, char *limiter);
 int						count_args(char **commands);
 char					**make_new_args(char **commands);

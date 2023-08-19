@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:17 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 10:30:01 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 16:15:43 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ char **extended_splitting(char **phrases)
 					int x = k;
 					while (phrases[i][x] && phrases[i][x] != '<' && phrases[i][x] != '>')
 						x++;
-					// printf("|%s|   |%s|    %d\n",&phrases[i][k],&phrases[i][x],x-k);
 					if (phrases[i][x] && x-k > 0)
 					{
 						arr[j++] = ft_substr(phrases[i], k, x-k);
@@ -213,18 +212,3 @@ char	**split_command(char *s)
 	phrases = extended_splitting(phrases);
 	return (phrases);
 }
-
-// int main()
-// {
-// 	char **phrases;
-// 	char *s = "export a=b x=y";
-// 	phrases = split_command(s);
-
-// 	int i = 0;
-// 	while (phrases[i])
-// 	{
-// 		printf("%s\n", phrases[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
