@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:47:41 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 17:50:09 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,42 +154,6 @@ char	*operations(char *s)
 	}
 	return (op);
 }
-
-/*char	*operations(char *s)
-{
-	char	*op;
-	int		i;
-	int		quote[2];
-
-	op = "";
-	i = -1;
-	quote[sin] = 0;
-	quote[doub] = 0;
-	while (s[++i])
-	{
-		if (s[i] == '\'' && !quote[doub])
-			quote[sin] = !quote[sin];
-		if (s[i] == '\"' && !quote[sin])
-			quote[doub] = !quote[doub];
-		if (((i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] != '|') || (i
-					+ 1 == ft_strlen(s) && s[i] == '|' && !s[i + 1]))
-			&& !quote[doub] && !quote[sin])
-			op = ft_strjoin(op, "1|");
-		if (i + 1 < ft_strlen(s) && s[i] == '|' && s[i + 1] == '|'
-			&& !quote[doub] && !quote[sin])
-		{
-			op = ft_strjoin(op, "2|");
-			i++;
-		}
-		if (i + 1 < ft_strlen(s) && s[i] == '&' && s[i + 1] == '&'
-			&& !quote[doub] && !quote[sin])
-		{
-			op = ft_strjoin(op, "2&");
-			i++;
-		}
-	}
-	return (op);
-}*/
 
 char	**initial_split(char *s, int sw)
 {
