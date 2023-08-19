@@ -6,13 +6,11 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 18:03:17 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 18:09:04 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 {
@@ -35,11 +33,27 @@ static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 			info->quote_type = 2;
 	}
 }
-
-void	fix_string(t_fill_info *info, char *dest, char *src)
+void	fix_string2(t_fill_info *info, char **dest, char **src)
 {
 	char	c;
 
+	c = *(*src);
+	if (c == '\'')
+		info->quote_type = 1;
+	else if (c == '\"')
+		info->quote_type = 2;
+	(*src)++;
+	while (*(*src) && *(*src) != c)
+	{
+		*(*dest)= *(*src);
+		(*dest)++;
+		(*src)++;
+	}
+	if (*(*src) == c)
+		(*src)++;
+}
+void	fix_string(t_fill_info *info, char *dest, char *src)
+{
 	if (src[0] && src[1] && !src[2] && src[0] == src[1])
 		return ;
 	if (ft_strchr(src, '=') || ft_strchr(src, '$'))
@@ -47,22 +61,7 @@ void	fix_string(t_fill_info *info, char *dest, char *src)
 	while (*src)
 	{
 		if (*src == '"' || *src == '\'')
-		{
-			c = *src;
-			if (c == '\'')
-				info->quote_type = 1;
-			else if (c == '\"')
-				info->quote_type = 2;
-			src++;
-			while (*src && *src != c)
-			{
-				*dest = *src;
-				dest++;
-				src++;
-			}
-			if (*src == c)
-				src++;
-		}
+			fix_string2(info, &dest, &src);
 		else
 		{
 			*dest = *src;
