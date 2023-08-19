@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:55:49 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 15:44:21 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:38:45 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	cd(t_command *command)
 	char	*old_path;
 	int		offset;
 
+	offset = 0;
 	if (!command->command_args[1])
 		command->command_args[1] = get_env_data("HOME");
 	if (cd_help(command, offset))

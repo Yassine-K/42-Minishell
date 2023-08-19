@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 15:24:17 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 15:29:07 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:37:50 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	env_export3(t_command *command, char **args, int i)
 	return (1);
 }
 
-void	env_export2(t_command *command)
+void	env_export2(void)
 {
 	char	*tmp;
 	t_env	*env;
@@ -71,12 +71,10 @@ void	env_export(t_command *command)
 {
 	char	**args;
 	int		i;
-	t_env	*new_env;
-	t_env	*search;
 
 	if (!command->command_args[1])
 	{
-		env_export2(command);
+		env_export2();
 		return ;
 	}
 	i = 0;

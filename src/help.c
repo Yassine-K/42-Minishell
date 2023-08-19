@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 18:28:28 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:40:09 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,15 +160,15 @@ void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
 	}
 }
 
-static int im_i_in_9aws(char *arr)
-{
-	arr = ft_strtrim(arr, " \t\n");
-	//check if arr has operators
-	if (!ft_strncmp(arr, "|", 1) || !ft_strncmp(arr, "&&", 2)
-		|| !ft_strncmp(arr + ft_strlen(arr) - 1, "|", 1) || !ft_strncmp(arr + ft_strlen(arr) - 2, "&&", 2))
-		return (0);
-	return (1);
-}
+// static int im_i_in_9aws(char *arr)
+// {
+// 	arr = ft_strtrim(arr, " \t\n");
+// 	//check if arr has operators
+// 	if (!ft_strncmp(arr, "|", 1) || !ft_strncmp(arr, "&&", 2)
+// 		|| !ft_strncmp(arr + ft_strlen(arr) - 1, "|", 1) || !ft_strncmp(arr + ft_strlen(arr) - 2, "&&", 2))
+// 		return (0);
+// 	return (1);
+// }
 
 
 static int	par_coount(char *s)
@@ -198,9 +198,9 @@ static int	par_coount(char *s)
 }
 int	nested_par(char **arr, int check, int index)
 {
-	char	**tmp;
+	// char	**tmp;
 	int		i;
-	int		j;
+	// int		j;
 	
 	// if (check)
 	// 	printf("nested: %s\n",arr[0]);
@@ -615,7 +615,7 @@ int	nested_par(char **arr, int check, int index)
 				g_vars->op = ft_strdup("");
 			if (arr[i + 1] || (!arr[i+1]  && (arr[i][0] == '&' || arr[i][0] == '|') && index > 0))
 			{
-				char *tmp_op = ft_strtrim(arr[i], " \n\t");
+				// char *tmp_op = ft_strtrim(arr[i], " \n\t");
 				// if ((!ft_strncmp(tmp_op, "&&", -1) || !ft_strncmp(tmp_op, "||", -1) || !ft_strncmp(tmp_op, "|", -1)) && arr[i +1])
 				// {
 				// 	i++;

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 18:10:40 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 20:36:29 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,13 @@ void	fix_string(t_fill_info *info, char *dest, char *src)
 	*dest = '\0';
 }
 
-int	remove_quotes(t_fill_info *info, char **arr)
+void	remove_quotes_help(int quote[2], char **arr)
 {
-	int	i;
-	int	num_1;
-	int	num_2;
-	int	sin;
-	int	dubl;
 	int	j;
+	int	i;
 
-	sin = 0;
-	dubl = 0;
-	(void)g_vars;
+	quote[sin] = 0;
+	quote[doub] = 0;
 	i = -1;
 	while (arr[++i])
 	{
@@ -93,12 +88,22 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		while (arr[i][++j])
 		{
 			if (arr[i][j] == '\'')
-				sin++;
+				quote[sin]++;
 			else if (arr[i][j] == '\"')
-				dubl++;
+				quote[doub]++;
 		}
 	}
-	if (sin % 2 != 0 || dubl % 2 != 0)
+}
+
+int	remove_quotes(t_fill_info *info, char **arr)
+{
+	int	i;
+	int	num_1;
+	int	num_2;
+	int	quote[2];
+
+	remove_quotes_help(quote, arr);
+	if (quote[sin] % 2 != 0 || quote[doub] % 2 != 0)
 	{
 		ft_dprintf(2, "minishell: unexpected EOF while looking for matching\n");
 		g_vars->ex_status = 2;
@@ -118,16 +123,40 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	return (1);
 }
 
-char	*gg(char *original_string, int should_expand)
+void	expand_herd_help(char *original_string, char **final, int *i)
 {
-	int		i;
-	char	*final;
-	char	tmp[2];
 	char	*data;
 	int		j;
 	char	*id;
 
-	i = 0;
+	if (original_string[(*i)] == '?')
+	{
+		data = ft_itoa(g_vars->ex_status);
+		*final = ft_strjoin((*final), data);
+	}
+	else
+	{
+		j = -1;
+		while (original_string[++j + (*i)])
+		{
+			if (ft_strchr(" \"'\n", original_string[j + (*i)]))
+				break ;
+		}
+		id = ft_substr(original_string, (*i), j);
+		data = get_env_data(id);
+		if (!data)
+			data = "";
+		(*final) = ft_strjoin((*final), data);
+		(*i) += j - 1;
+	}
+}
+
+char	*expand_herd(char *original_string, int should_expand)
+{
+	int		i;
+	char	*final;
+	char	tmp[2];
+
 	final = "";
 	i = -1;
 	while (original_string[++i])
@@ -135,26 +164,7 @@ char	*gg(char *original_string, int should_expand)
 		if (original_string[i] == '$' && should_expand)
 		{
 			i++;
-			if (original_string[i] == '?')
-			{
-				data = ft_itoa(g_vars->ex_status);
-				final = ft_strjoin(final, data);
-			}
-			else
-			{
-				j = -1;
-				while (original_string[++j + i])
-				{
-					if (ft_strchr(" \"'\n", original_string[j + i]))
-						break ;
-				}
-				id = ft_substr(original_string, i, j);
-				data = get_env_data(id);
-				if (!data)
-					data = "";
-				final = ft_strjoin(final, data);
-				i += j - 1;
-			}
+			expand_herd_help(original_string, &final, &i);
 		}
 		else
 		{
@@ -176,15 +186,37 @@ char	*expand_env(t_fill_info *info, char *str)
 	should_expand = 1;
 	if (info->quote_type == 1 || info->quote_type == 2)
 		should_expand = 0;
-	tt = gg(str, should_expand);
+	tt = expand_herd(str, should_expand);
 	return (tt);
+}
+
+void	get_herdoc_data_help(char **total, t_fill_info *info, char *limiter)
+{
+	char	*str;
+	char	*ww;
+
+	while (1)
+	{
+		if (!g_vars->interrupted_mode && isatty(STDIN_FILENO))
+			ft_dprintf(1, "> ");
+		str = get_next_line(g_vars->heredocs_fd);
+		if (g_vars->interrupted_mode == 3)
+		{
+			g_vars->ex_status = 1;
+			*total = "";
+			break ;
+		}
+		ww = expand_env(info, str);
+		if (!ww || (ww && !ft_strncmp(ww, limiter, -1)))
+			break ;
+		*total = ft_strjoin((*total), ww);
+	}
+	g_vars->is_running = 0;
 }
 
 char	*get_herdoc_data(t_fill_info *info, char *limiter)
 {
-	char	*str;
 	char	*total;
-	char	*ww;
 	char	*name;
 	int		fd;
 
@@ -197,23 +229,7 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	else
 		g_vars->heredocs_fd = dup(0);
 	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->new_term);
-	while (1)
-	{
-		if (!g_vars->interrupted_mode && isatty(STDIN_FILENO))
-			ft_dprintf(1, "> ");
-		str = get_next_line(g_vars->heredocs_fd);
-		if (g_vars->interrupted_mode == 3)
-		{
-			g_vars->ex_status = 1;
-			total = "";
-			break ;
-		}
-		ww = expand_env(info, str);
-		if (!ww || (ww && !ft_strncmp(ww, limiter, -1)))
-			break ;
-		total = ft_strjoin(total, ww);
-	}
-	g_vars->is_running = 0;
+	get_herdoc_data_help(&total, info, limiter);
 	if (isatty(0))
 		close(g_vars->heredocs_fd);
 	tcsetattr(STDIN_FILENO, TCSANOW, &g_vars->old_term);
@@ -224,6 +240,7 @@ char	*get_herdoc_data(t_fill_info *info, char *limiter)
 	close(fd);
 	return (name);
 }
+
 static int	is_a_redirection(char *str)
 {
 	if (!str)
