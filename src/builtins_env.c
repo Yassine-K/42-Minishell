@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 10:35:48 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 13:34:12 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,38 +57,44 @@ int	analyze_args(char **arg)
 	return (1);
 }
 
+void	env_export2(t_command *command)
+{
+	char	*tmp;
+	t_env	*env;
+	int		j;
+	
+	env = g_vars->env_head;
+	while (env)
+	{
+		tmp = env->env_data;
+		if (env->not_declared == no_value && !tmp[0])
+			ft_dprintf(1, "declare -x %s\n", env->env_id);
+		else
+		{
+			j = -1;
+			ft_dprintf(1, "declare -x %s=\"", env->env_id);
+			while (tmp[++j])
+			{
+				if (tmp[j] == '\"' || tmp[j] == '$' || tmp[j] == '\\')
+					ft_dprintf(1, "\\");
+				ft_dprintf(1, "%c", tmp[j]);
+			}
+			ft_dprintf(1, "\"\n");
+		}
+		env = env->next;
+	}
+}
+
 void	env_export(t_command *command)
 {
 	t_env	*new_env;
 	t_env	*search;
-	t_env	*env;
 	char	**args;
-	char	*tmp;
-	int		j;
 	int		i;
 
 	if (!command->command_args[1])
 	{
-		env = g_vars->env_head;
-		while (env)
-		{
-			tmp = env->env_data;
-			if (env->not_declared == no_value && !tmp[0])
-				ft_dprintf(1, "declare -x %s\n", env->env_id);
-			else
-			{
-				j = -1;
-				ft_dprintf(1, "declare -x %s=\"", env->env_id);
-				while (tmp[++j])
-				{
-					if (tmp[j] == '\"' || tmp[j] == '$' || tmp[j] == '\\')
-						ft_dprintf(1, "\\");
-					ft_dprintf(1, "%c", tmp[j]);
-				}
-				ft_dprintf(1, "\"\n");
-			}
-			env = env->next;
-		}
+		env_export2(command);
 		return ;
 	}
 	i = 0;
