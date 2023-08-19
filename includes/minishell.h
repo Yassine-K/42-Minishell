@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 10:26:59 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/19 15:26:05 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void					env_export(t_command *command);
 void					unset(t_command *command);
 void					env(void);
 void					my_exit(t_command *command);
-
+int						analyze_args(char **arg);
 void					print_command(t_command *command);
 
 //signals
