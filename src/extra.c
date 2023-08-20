@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 22:11:02 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:36:24 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:10:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,28 @@ void	fd_handler(int i)
 		g_vars->pipe = 0;
 		g_vars->prev_pipefd[0] = g_vars->next_pipefd[0];
 		g_vars->prev_pipefd[1] = g_vars->next_pipefd[1];
+	}
+}
+
+void	execution_phase(void)
+{
+	t_command	*tmp;
+	int			status;
+
+	g_vars->pid = my_alloc(sizeof(int) * g_vars->command_count);
+	tmp = g_vars->command_head;
+	start_execution(tmp);
+	tmp = g_vars->command_head;
+	start_waiting(tmp, &status);
+	if (g_vars->is_interrupted)
+	{
+		if (g_vars->interrupted_mode == 1)
+			g_vars->ex_status = 130;
+		if (g_vars->interrupted_mode == 2)
+			g_vars->ex_status = 131;
+		if (g_vars->interrupted_mode == 3)
+			g_vars->ex_status = 1;
+		g_vars->is_interrupted = 0;
+		g_vars->interrupted_mode = 0;
 	}
 }

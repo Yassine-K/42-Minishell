@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/20 19:14:55 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:13:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,11 @@ void					red_help(t_fill_info *info, char **commands, int *i);
 void					fix_string(t_fill_info *info, char *dest, char *src);
 char					**expand_variables(t_fill_info *info, char **args);
 int						test_ambiguous(t_fill_info *in, char **arg);
+void					start_waiting(t_command *tmp, int *status);
+void					start_execution(t_command *tmp);
+void					handle_signals(int signum);
+void					init_termio(void);
+
 extern t_args			*g_vars;
 
 enum					e_nums

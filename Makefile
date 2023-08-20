@@ -1,8 +1,8 @@
-SRC = env_stuff.c env_linked_list_stuff.c command_linked_list_stuff.c parse_command.c split_command.c \
+SRC =  main.c env_stuff.c env_linked_list_stuff.c command_linked_list_stuff.c parse_command.c split_command.c \
 	split_initial.c path_stuff.c extra.c parse_command2.c execution_phase.c env_export.c redirections.c \
-	builtins_env.c builtins_shell.c handle_signals.c help.c parse_command3.c exec_help.c ambig.c exec_redirection.c \
+	builtins_env.c builtins_shell.c help.c parse_command3.c exec_help.c ambig.c exec_redirection.c \
 	split_bonus.c wildcard_bonus.c redir_command_linked_list.c helpers.c extand_split.c herd_stuff.c dollar.c \
-	subshell_exec.c subshell_error.c nested_par.c nested_par_help.c
+	subshell_exec.c subshell_error.c nested_par.c nested_par_help.c main_execution.c
 
 SRC_DIR = src/
 OBJ_DIR = obj/
@@ -23,9 +23,9 @@ WWW = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): ascci_art $(OSRC) src/main.c
+$(NAME): ascci_art $(OSRC) src/handle_signals.c
 	@make -C libft > /dev/null
-	@$(CC) $(READ_LINE) $(WWW)  $(INCLUDE) $(OSRC) src/main.c  libft/libft.a -o $@
+	@$(CC) $(READ_LINE) $(WWW)  $(INCLUDE) $(OSRC) src/handle_signals.c  libft/libft.a -o $@
 	@printf "$(RED)-------------------------------------------------------------- MiniShell Done --------------------------------------------------------------$(RESET)\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c includes/minishell.h # main.c
