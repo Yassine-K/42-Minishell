@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 11:43:49 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 11:55:31 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,30 @@ int	checker(char **commands, int i)
 	return (1);
 }
 
-int rederiction_error(char **commands, int i)
+int	rederiction_error2(char **commands, int i)
+{
+	if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
+			|| !ft_strncmp(commands[i], "<", -1) || !ft_strncmp(commands[i],
+				">>", -1) || !ft_strncmp(commands[i], "<<", -1)) && (
+			!ft_strncmp(commands[i + 1], ">", -1)
+			|| !ft_strncmp(commands[i + 1], "<", -1)
+			|| !ft_strncmp(commands[i + 1], ">>", -1)
+			|| !ft_strncmp(commands[i + 1], "<<", -1)))
+	{
+		ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
+			commands[i + 1]);
+		g_vars->ex_status = 2;
+		return (0);
+	}
+	return (1);
+}
+
+int	rederiction_error(char **commands, int i)
 {
 	if (ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
-	|| ft_strnstr(commands[i], "=>", -1)
-	|| (!ft_strncmp(commands[i], ">", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], "<", -1))
-	|| (!ft_strncmp(commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], ">", -1)))
+		|| ft_strnstr(commands[i], "=>", -1) || (!ft_strncmp(commands[i], ">",
+				-1) && commands[i + 1] && !ft_strncmp(commands[i + 1], "<", -1)) || (!ft_strncmp(
+			commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], ">", -1)))
 	{
 		ft_dprintf(2, "minishell: syntax error\n");
 		g_vars->ex_status = 2;
@@ -55,19 +73,8 @@ int rederiction_error(char **commands, int i)
 		g_vars->ex_status = 2;
 		return(0);
 	}
-	if (commands[i + 1] && (!ft_strncmp(commands[i], ">", -1)
-			|| !ft_strncmp(commands[i], "<", -1) || !ft_strncmp(commands[i],
-				">>", -1) || !ft_strncmp(commands[i], "<<", -1)) && (
-			!ft_strncmp(commands[i + 1], ">", -1)
-			|| !ft_strncmp(commands[i + 1], "<", -1)
-			|| !ft_strncmp(commands[i + 1], ">>", -1)
-			|| !ft_strncmp(commands[i + 1], "<<", -1)))
-	{
-		ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
-			commands[i + 1]);
-		g_vars->ex_status = 2;
+	if (!rederiction_error2(commands, i))
 		return (0);
-	}
 	return (1);
 }
 
