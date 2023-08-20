@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 21:47:43 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 14:42:34 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <termios.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# define SUB 8
 
 typedef struct t_env
 {
@@ -234,6 +235,17 @@ enum					e_expand
 	data = 1,
 	news,
 	str
+};
+
+enum					e_nested
+{
+	stat = 1,
+	par_count,
+	nest_return,
+	ind,
+	subshell_op_ret,
+	subshell_err,
+	skip_op
 };
 
 #endif

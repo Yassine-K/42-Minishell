@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:57 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 18:02:52 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 13:57:14 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	execute(t_command **tmp, int *index)
 			if (waitpid(g_vars->pid[j], &status, 0) != -1)
 			{
 				// printf
-				(g_vars->ex_status) = WEXITSTATUS(status);
+				(g_vars->ex_status) = status >> 8;
 			}
 		}
 		if (g_vars->ex_status != 0 && g_vars->op[(i - 1) * 2 + 1] == '&')
@@ -200,7 +200,7 @@ void	execution_phase()
 			while (++j <= i)
 			{
 				if (waitpid(g_vars->pid[j], &status, 0) != -1)
-					(g_vars->ex_status) = WEXITSTATUS(status);
+					(g_vars->ex_status) = status >> 8;
 			}
 		}
 		tmp = tmp->next;
