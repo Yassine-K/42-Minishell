@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 17:31:10 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 17:54:59 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 22:35:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	check_validity(char **phrases, int phrase_count, int sw)
 		phrases[i] = ft_strtrim(phrases[i], " \t\n");
 		if ((!sw && (!phrases[i][0])))
 		{
-			if ((!sw && phrase_count > 1) || (!sw && !phrases[i][0]))
+			if ((!sw && phrase_count > 1) || (!sw && !phrases[i][0] && i))
 			{
 				ft_dprintf(2, "minishell: syntax error\n");
 				g_vars->ex_status = 2;
