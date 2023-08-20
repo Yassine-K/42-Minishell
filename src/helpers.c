@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 10:11:21 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 17:55:04 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 18:55:59 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_strrevcmp(char *s1, char *s2)
 	return (s1[i] - s2[j]);
 }
 
-void	split_char_init1(int n[4])
+void	split_char_init(int n[4])
 {
 	n[i] = -1;
 	n[j] = -1;

@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/20 18:28:25 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 19:14:55 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,14 @@ void					prepare_commands(char **commands);
 void					parsing_initial_split(char **commands);
 char					**get_path(void);
 char					*get_command_path(char **path, char *command);
-
+int						skip_opertor(char **arr, int n[SUB], int check,
+							char *s);
 t_command				*ft_last_command(t_command *lst);
 void					add_command_in_back(t_command **head, t_command *node);
 void					add_command_in_front(t_command **head, t_command *node);
 int						ft_command_list_size(t_command **head);
 t_command				*ft_new_command(t_fill_info *info);
-
+int						par_coount(char *s);
 t_env					*ft_last_env(t_env *lst);
 void					add_env_in_back(t_env **head, t_env *node);
 void					add_env_in_front(t_env **head, t_env *node);
@@ -117,7 +118,7 @@ t_env					*ft_new_env_node(char *env_id, char *env_data);
 void					ft_node_remove_if(t_env **head, char *env_id);
 int						ft_env_list_size(t_env **head);
 void					the_search_env(t_env **search, char **args);
-
+void					wait_pid(int n[SUB], char *op);
 void					parse_commands(char *line);
 char					**initial_split(char *s, int sw);
 char					**split_command(char *s);
@@ -125,12 +126,12 @@ char					**extended_splitting(char **phrases);
 void					set_env(void);
 char					*get_env_data(char *id);
 int						remove_quotes(t_fill_info *info, char **arr);
-void					split_char_init1(int n[4]);
 char					*get_herdoc_data(t_fill_info *info, char *limiter);
 int						count_args(char **commands);
 char					**make_new_args(char **commands);
 int						check_permision(char *command_path, char *name,
 							int arg);
+int						subshell_op(int n[SUB], int check, char **arr);
 int						parsing_commands(char **commands);
 char					**split_par(char *s);
 int						has_char(char *s, char c);
@@ -146,7 +147,8 @@ void					handle_child(t_command *tmp, int i);
 void					remove_spaces_in_between(void);
 char					*operations(char *s);
 int						ft_strrevcmp(char *s1, char *s2);
-
+int						not_subshell_skip(int n[SUB], char **arr, int check);
+int						subshell_errors(char **kobi, int check);
 void					execution_phase(void);
 void					execute_built_in(t_command *command);
 void					execute( t_command **tmp, int *index);
@@ -166,11 +168,12 @@ void					print_command(t_command *command);
 
 void					init_termio(void);
 void					handle_signals(int sig);
-
+void					not_subshell_pieps(int n[SUB], char **arr, int check);
 char					*are_two_args_number(char **str);
 void					fd_handler(int i);
 char					*is_arg_number(char *str);
-
+void					sub_pipe(int n[SUB], char **arr, char **kobi,
+							int check);
 char					**split_arg(char *arg);
 void					do_redirections(t_cmd_redir *head);
 t_cmd_redir				*ft_last_redir(t_cmd_redir *lst);

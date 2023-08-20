@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 18:37:37 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 18:12:01 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 18:56:06 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	**split_par(char *s)
 	char	**arr;
 	int		n[4];
 
-	split_char_init1(n);
+	split_char_init(n);
 	if (!s || !s[0])
 		return (0);
 	n[w] = count_par(s);
