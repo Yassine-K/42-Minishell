@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 19:52:24 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 11:55:31 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 12:11:55 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ int	rederiction_error(char **commands, int i)
 {
 	if (ft_strnstr(commands[i], "<<<", -1) || ft_strnstr(commands[i], ">>>", -1)
 		|| ft_strnstr(commands[i], "=>", -1) || (!ft_strncmp(commands[i], ">",
-				-1) && commands[i + 1] && !ft_strncmp(commands[i + 1], "<", -1)) || (!ft_strncmp(
-			commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(commands[i + 1], ">", -1)))
+				-1) && commands[i + 1] && !ft_strncmp(commands[i + 1], "<", -1))
+		|| (!ft_strncmp(commands[i], "<", -1) && commands[i + 1] && !ft_strncmp(
+				commands[i + 1], ">", -1)))
 	{
 		ft_dprintf(2, "minishell: syntax error\n");
 		g_vars->ex_status = 2;
@@ -71,89 +72,100 @@ int	rederiction_error(char **commands, int i)
 		ft_dprintf(2,
 			"minishell: syntax error near unexpected token `newline'\n");
 		g_vars->ex_status = 2;
-		return(0);
+		return (0);
 	}
 	if (!rederiction_error2(commands, i))
 		return (0);
 	return (1);
 }
 
-void	dollar_active(t_fill_info *info, int n[4], char *strings[4], char **args)
+void	dollar_active_help(int n[4], char *s[4])
 {
-	int sould_remove_space = 0;
+	while (s[str][++n[k]] && s[str][n[k]] != '\''
+		&& s[str][n[k]] != '"' && s[str][n[k]] != ' '
+		&& s[str][n[k]] != '-')
+	{
+		if (s[str][n[k]] == '?')
+		{
+			n[k]++;
+			break ;
+		}
+		if (s[str][n[k]] == '$')
+			break ;
+		if (s[str][n[k]] == '@')
+		{
+			n[k]++;
+			break ;
+		}
+		if (ft_isdigit(s[str][n[k]]))
+		{
+			n[k]++;
+			break ;
+		}
+	}
+	if (!s[str][n[k]])
+		n[k]++;
+}
+
+void	dollar_active3(int n[4], char *s[4], char **args)
+{
+	if (!ft_strncmp(s[str] + 1, "?", -1))
+		args[n[i]] = ft_strjoin(s[news], ft_itoa((g_vars->ex_status)));
+	else
+	{
+		if (s[data])
+		{
+			args[n[i]] = ft_strjoin(s[news], s[data]);
+			args[n[i]] = ft_strjoin(args[n[i]],
+					ft_substr(s[str], n[k], -1));
+		}
+		else
+			args[n[i]] = ft_strjoin(s[news], "");
+	}
+	s[str] += n[k];
+	n[k] = 0;
+}
+
+void	dollar_active2(int n[4], char *s[4], char **args)
+{
+	dollar_active_help(n, s);
+	s[tmp] = ft_substr(s[str], 1, n[k] - 1);
+	if (!s[tmp][0])
+		s[data] = "$";
+	else if (s[tmp][0] == '?')
+		s[data] = ft_itoa(g_vars->ex_status);
+	else if (s[tmp][0] == '@')
+		s[data] = "";
+	else if (ft_isdigit(s[tmp][0]))
+	{
+		s[data] = args[ft_atoi(s[tmp])];
+		s[data] = "";
+	}
+	else
+		s[data] = get_env_data(s[tmp]);
+	n[j] = ft_strchr_num(args[n[i]], '$');
+	s[news] = ft_substr(args[n[i]], 0, n[j]);
+}
+
+void	dollar_active(t_fill_info *info, int n[4], char *s[4], char **args)
+{
+	int	sould_remove_space;
+
+	sould_remove_space = 0;
 	if (info->quote_type == 0)
 		sould_remove_space = 1;
 	n[k] = 0;
-	if (strings[str][n[k] -1] && strings[str][n[k] -1] == '\'')
+	if (s[str][n[k] -1] && s[str][n[k] -1] == '\'')
 	{
 		info->quote_type = 1;
-		return ;	
+		return ;
 	}
-	while (strings[str][n[k]])
-	{		
-		if (!ft_strchr(strings[str], '$'))
+	while (s[str][n[k]])
+	{
+		if (!ft_strchr(s[str], '$'))
 			return ;
-		while (strings[str][++n[k]] && strings[str][n[k]] != '\''
-			&& strings[str][n[k]] != '"' && strings[str][n[k]] != ' '
-			&& strings[str][n[k]] != '-')
-		{
-			if (strings[str][n[k]] == '?')
-			{
-				n[k]++;
-				break ;
-			}
-			if (strings[str][n[k]] == '$')
-				break ;
-			if (strings[str][n[k]] == '@')
-			{
-				n[k]++;
-				break ;
-			}
-			if (ft_isdigit(strings[str][n[k]]))
-			{
-				n[k]++;
-				break ;
-			}
-		}
-
-		if (!strings[str][n[k]])
-			n[k]++;
-		strings[tmp] = ft_substr(strings[str], 1, n[k] - 1);
-
-		if (!strings[tmp][0])
-			strings[data] = "$";
-		else if (strings[tmp][0] == '?')
-			strings[data] = ft_itoa(g_vars->ex_status);
-		else if (strings[tmp][0] == '@')
-			strings[data] = "";
-		else if (ft_isdigit(strings[tmp][0]))
-		{
-			strings[data] = args[ft_atoi(strings[tmp])];
-			strings[data] = "";
-		}
-		else
-			strings[data] = get_env_data( strings[tmp]);
-		
-
-
-		n[j] = ft_strchr_num(args[n[i]], '$');
-		strings[news] = ft_substr(args[n[i]], 0, n[j]);
-		if (!ft_strncmp(strings[str] + 1, "?", -1))
-			args[n[i]] = ft_strjoin(strings[news], ft_itoa((g_vars->ex_status)));
-		else
-		{
-			if (strings[data])
-			{
-				args[n[i]] = ft_strjoin(strings[news], strings[data]);
-				args[n[i]] = ft_strjoin(args[n[i]],
-						ft_substr(strings[str], n[k], -1));
-			}
-			else
-				args[n[i]] = ft_strjoin(strings[news], "");
-		}
-		
-		strings[str] += n[k];
-		n[k] = 0;
+		dollar_active2(n, s, args);
+		dollar_active3(n, s, args);
 	}
 }
 
@@ -161,7 +173,7 @@ static int	par_coount(char *s)
 {
 	int	i;
 	int	active;
-	int par_c;
+	int	par_c;
 
 	i = 0;
 	active = 0;
