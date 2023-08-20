@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:02:02 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 19:12:03 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:28:53 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ int	subshell_errors2_help(char **op_err, int y)
 	while (op_err[y][++w])
 	{
 		if (op_err[y][w] == '|' || op_err[y][w] == '&')
-		{
 			op_c++;
-		}
 		if (op_c > 2)
 		{
 			ft_dprintf(2, "minishell: syntax error\n");
 			g_vars->ex_status = 2;
 			return (0);
 		}
+		if (op_err[y][w] != '|' && op_err[y][w] != '&')
+			op_c = 0;
 	}
 	return (1);
 }

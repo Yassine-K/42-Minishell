@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:30:01 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/20 20:13:28 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:21:04 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void					start_waiting(t_command *tmp, int *status);
 void					start_execution(t_command *tmp);
 void					handle_signals(int signum);
 void					init_termio(void);
+int						subshell_errors2_help(char **op_err, int y);
 
 extern t_args			*g_vars;
 

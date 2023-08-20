@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:57:54 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 19:11:55 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 20:27:23 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int	nested_par(char **arr, int check, int index)
 		}
 		else
 		{
+			if (!subshell_errors2_help(arr, 0))
+				return (0);
 			not_subshell_pieps(n, arr, check);
 			res = nested_par_main(n, check, arr);
 			if (res != -2)
