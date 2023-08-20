@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 11:33:03 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 15:42:56 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 11:38:52 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	set_env(void)
 		arr = split_arg(g_vars->ev[i]);
 		env = ft_new_env_node(arr[0], arr[1]);
 		add_env_in_back(&g_vars->env_head, env);
-	}	
+	}
 }
 
 int	ft_env_list_size(t_env **head)

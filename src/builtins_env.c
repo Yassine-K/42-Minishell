@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 12:03:37 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 15:24:30 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/20 11:38:18 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	env(void)
 				ft_dprintf(1, "%s=%s\n", env->env_id, env->env_data);
 		}
 		env = env->next;
-	}	
+	}
 }
 
 void	unset(t_command *cmd)
