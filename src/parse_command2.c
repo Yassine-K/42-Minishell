@@ -6,13 +6,13 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/19 20:57:41 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 15:09:20 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
+void	rm_qts_help(int *num, char **arr, char *q, t_fill_info *info)
 {
 	char	*new;
 	char	**tmp;
@@ -94,12 +94,23 @@ void	remove_quotes_help(int quote[2], char **arr)
 		}
 	}
 }
+void set_quotes_types(t_fill_info *info, char *str)
+{
+	int i;
+
+	i=-1;
+	while (str[++i])
+	{
+		if(str[i] == '\'' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\'')))
+			info->quote_type = 1;
+		else if(str[i] == '\"' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\"')))
+			info->quote_type = 2;
+	}
+}
 
 int	remove_quotes(t_fill_info *info, char **arr)
 {
 	int	i;
-	int	num_1;
-	int	num_2;
 	int	quote[2];
 
 	remove_quotes_help(quote, arr);
@@ -115,10 +126,7 @@ int	remove_quotes(t_fill_info *info, char **arr)
 	i = -1;
 	while (arr[++i])
 	{
-		if (arr[i][0] == '\'' && arr[i][1] && arr[i][1] != '\'')
-			rm_qts_help(&num_1, &arr[i], "\'", info);
-		else if (arr[i][0] == '\"' && arr[i][1] && arr[i][1] != '\"')
-			rm_qts_help(&num_2, &arr[i], "\"", info);
+		set_quotes_types(info,arr[i]);
 	}
 	return (1);
 }

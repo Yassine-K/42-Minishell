@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 12:15:02 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 18:12:21 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 15:07:28 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,6 @@ void	dollar_active(t_fill_info *info, int n[4], char *s[4], char **args)
 	if (info->quote_type == 0)
 		sould_remove_space = 1;
 	n[k] = 0;
-	if (s[str][n[k] -1] && s[str][n[k] -1] == '\'')
-	{
-		info->quote_type = 1;
-		return ;
-	}
 	while (s[str][n[k]])
 	{
 		if (!ft_strchr(s[str], '$'))
