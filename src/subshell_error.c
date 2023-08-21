@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:02:02 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/20 20:28:53 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 11:49:31 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 int	subshell_errors2_help(char **op_err, int y)
 {
-	int		w;
-	int		op_c;
+	int	w;
+	int	op_c;
+	int	quote[2];
 
 	w = -1;
 	op_c = 0;
+	quote[sin] = 0;
+	quote[doub] = 0;
 	while (op_err[y][++w])
 	{
-		if (op_err[y][w] == '|' || op_err[y][w] == '&')
+		subshell_errors2_help_quotes(quote, op_err[y][w]);
+		if ((op_err[y][w] == '|' || op_err[y][w] == '&')
+			&& !quote[doub] && !quote[sin])
 			op_c++;
 		if (op_c > 2)
 		{
@@ -29,7 +34,8 @@ int	subshell_errors2_help(char **op_err, int y)
 			g_vars->ex_status = 2;
 			return (0);
 		}
-		if (op_err[y][w] != '|' && op_err[y][w] != '&')
+		if (op_err[y][w] != '|' && op_err[y][w] != '&'
+			&& !quote[doub] && !quote[sin])
 			op_c = 0;
 	}
 	return (1);

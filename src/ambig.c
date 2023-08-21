@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 16:05:53 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/19 18:02:44 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 11:49:35 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,12 @@ int	test_ambiguous(t_fill_info *in, char **arg)
 				return (0);
 	}
 	return (1);
+}
+
+void	subshell_errors2_help_quotes(int quote[2], char c)
+{
+	if (c == '\'' && !quote[doub])
+		quote[sin] = !quote[sin];
+	if (c == '\"' && !quote[sin])
+		quote[doub] = !quote[doub];
 }
