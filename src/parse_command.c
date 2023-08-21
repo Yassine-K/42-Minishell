@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/21 15:08:58 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 15:24:50 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	check_permision(char *command_path, char *name, int arg)
 	}
 	return (0);
 }
+
 char	**expand_variables(t_fill_info *info, char **args)
 {
 	int		n[4];
@@ -76,16 +77,7 @@ char	**expand_variables(t_fill_info *info, char **args)
 	{
 		strings[str] = ft_strchr(args[n[i]], '$');
 		if (strings[str])
-		{
-			if(info->quote_type != 1)
-				dollar_active(info, n, strings, args);
-			else if(info->quote_type == 1)
-			{
-				int i = -1;
-				while (args[++i])
-					args[i] = ft_strtrim(args[i],"\'");
-			}
-		}
+			exp_var_quote(info, args, n, strings);
 		else if (ft_strchr(args[n[i]], '*') && info->quote_type == 0)
 		{
 			strings[tmp] = "";

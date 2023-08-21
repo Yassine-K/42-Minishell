@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 16:05:53 by ykhayri           #+#    #+#             */
-/*   Updated: 2023/08/21 11:49:35 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 15:28:29 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,34 @@ void	subshell_errors2_help_quotes(int quote[2], char c)
 		quote[sin] = !quote[sin];
 	if (c == '\"' && !quote[sin])
 		quote[doub] = !quote[doub];
+}
+
+void	exp_var_quote(t_fill_info *info, char **args, int n[4], char *strs[4])
+{
+	int	i;
+
+	if (info->quote_type != 1)
+		dollar_active(info, n, strs, args);
+	else if (info->quote_type == 1)
+	{
+		i = -1;
+		while (args[++i])
+			args[i] = ft_strtrim(args[i], "\'");
+	}
+}
+
+void	set_quotes_types(t_fill_info *info, char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\'' && (!str[i + 1]
+				|| (str[i + 1] && str[i + 1] != '\'')))
+			info->quote_type = 1;
+		else if (str[i] == '\"' && (!str[i + 1]
+				|| (str[i + 1] && str[i + 1] != '\"')))
+			info->quote_type = 2;
+	}
 }

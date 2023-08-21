@@ -6,7 +6,7 @@
 /*   By: ykhayri <ykhayri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 16:27:14 by abouabra          #+#    #+#             */
-/*   Updated: 2023/08/21 15:09:20 by ykhayri          ###   ########.fr       */
+/*   Updated: 2023/08/21 15:28:24 by ykhayri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,6 @@ void	remove_quotes_help(int quote[2], char **arr)
 		}
 	}
 }
-void set_quotes_types(t_fill_info *info, char *str)
-{
-	int i;
-
-	i=-1;
-	while (str[++i])
-	{
-		if(str[i] == '\'' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\'')))
-			info->quote_type = 1;
-		else if(str[i] == '\"' && (!str[i + 1] || (str[i + 1]  && str[i + 1] != '\"')))
-			info->quote_type = 2;
-	}
-}
 
 int	remove_quotes(t_fill_info *info, char **arr)
 {
@@ -125,8 +112,6 @@ int	remove_quotes(t_fill_info *info, char **arr)
 		fix_string(info, arr[i], arr[i]);
 	i = -1;
 	while (arr[++i])
-	{
-		set_quotes_types(info,arr[i]);
-	}
+		set_quotes_types(info, arr[i]);
 	return (1);
 }
